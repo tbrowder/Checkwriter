@@ -1,0 +1,53 @@
+{
+  "api": "1",
+  "auth": "zef:tbrowder",
+  "author": "zef:tbrowder",
+  "authors": [
+    "Tom Browder <tbrowder@acm.org>"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+    "Ask",
+    "Lingua::EN::Numbers",
+    "JSON::Hjson",
+    "JSON::Class:auth<zef::jonathanstowe>",
+    "PDF::Font::Loader",
+    "PDF::Lite",
+    "PDF::API6",
+    "PDF::Document",
+    "FontFactory::Type1",
+    "Text::Utils"
+  ],
+  "description": "Provides check writing capability.",
+  "license": "Artistic-2.0",
+  "name": "CheckWriter",
+  "perl": "6.*",
+  "provides": {
+    "CheckWriter": "lib/CheckWriter.rakumod",
+    "CheckWriter::Data": "lib/CheckWriter/Data.rakumod",
+    "CheckWriter::Handlers": "lib/CheckWriter/Handlers.rakumod"
+  },
+  "resources": [
+    "README",
+    "data.hjson",
+    "payee.hjson",
+    "quicken.chk",
+    "user-acct.hjson",
+    "user-bank.hjson",
+    "user-check.json"
+  ],
+  "source-url": "https://github.com/tbrowder/CheckWriter.git",
+  "support": {
+    "bugtracker": "https://github.com/tbrowder/CheckWriter/issues"
+  },
+  "tags": [
+    "check writer",
+    "PDF bank",
+    "finance"
+  ],
+  "test-depends": [
+    "Test::META"
+  ],
+  "version": "0.0.1"
+}

@@ -27,12 +27,12 @@ checkwriter write-check [interactive process]
 =end code
 
 The user's default personal or business bank account and other private
-information is in the C<AccountData.hjson> file, and the records of
+information are in the C<AccountData.hjson> file, and the records of
 checks written are in the C<Register.json> file.  The data to define
-the physical layout of a printed check are in file C<BlankChecl.hjson>
-file.  All are shown as examples in the C<resources> directory. All
-the C<hjson> input files use the C<Hjson> format (see module
-C<JSON::Hjson> for more information).
+the physical layout of a printed check are in file
+C<BlankCheck.hjson>.  All are shown as examples in the C<resources>
+directory. All the C<hjson> input files use the C<Hjson> format (see
+module C<JSON::Hjson> for more information).
 
 =head2 Planned features
 

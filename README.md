@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/tbrowder/CheckWriter/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/CheckWriter/actions) [![Actions Status](https://github.com/tbrowder/CheckWriter/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/CheckWriter/actions) [![Actions Status](https://github.com/tbrowder/CheckWriter/actions/workflows/windows-spec.yml/badge.svg)](https://github.com/tbrowder/CheckWriter/actions)
+
 CheckWriter
 ===========
 
@@ -14,7 +16,7 @@ SYNOPSIS
     use CheckWriter;
     checkwriter write-check [interactive process]
 
-The user's default personal or business bank account and other private information is in the `AccountData.hjson` file, and the records of checks written are in the `Register.json` file. The data to define the physical layout of a printed check are in file `BlankChecl.hjson` file. All are shown as examples in the `resources` directory. All the `hjson` input files use the `Hjson` format (see module `JSON::Hjson` for more information).
+The user's default personal or business bank account and other private information are in the `AccountData.hjson` file, and the records of checks written are in the `Register.json` file. The data to define the physical layout of a printed check are in file `BlankCheck.hjson`. All are shown as examples in the `resources` directory. All the `hjson` input files use the `Hjson` format (see module `JSON::Hjson` for more information).
 
 Planned features
 ----------------

@@ -2,7 +2,16 @@
 
 use JSON::Hjson;
 use JSON::Fast;
-use JSON::Class;
+use JSON::Class:auth<zef:vrurg>;
+
+my $hj = "../resources/BlankCheck.hjson";
+my $h = from-hjson(slurp $hj);
+for $h.kv -> $k,$v {
+    say "key: $k";
+    say "  val: $v";
+}
+
+=finish
 
 my $hj = q:to/HERE/;
 {

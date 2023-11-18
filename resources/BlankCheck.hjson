@@ -10,6 +10,7 @@
   + check number (same as the first, but on the MICR line)
   + amount (e.g., 132.09)
   + amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
+
   */
 
   // PS points from lower left of check paper to lower-left of the check
@@ -101,7 +102,6 @@
     // MUST be same as number1
     origin: 0 0
     font: m10
-  }
     length: 0
   }
   //   memo line

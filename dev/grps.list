@@ -1,0 +1,24 @@
+Inspecting chk file '../resources/quicken.chk'
+Results: 
+  Check height    : 246
+     translation-x: 0.0
+     translation-y: 4.0
+     rotation     : 0.0
+  Group 1
+      coordinates: 90.0 102.0 400.0 20.0
+      field name:  PAYEE
+  Group 2
+      coordinates: 90.0 132.0
+      field name:  AMOUNT_WORDS
+  Group 3
+      coordinates: 500.0 102.0
+      field name:  AMOUNT_NUMBER
+  Group 4
+      field name:  DATE
+      coordinates: 500.0 67.0
+  Group 5
+      field name:  NOTES
+      coordinates: 50.0 212.0
+  Group 6
+      field name:  ADDRESS
+      coordinates: 90.0 192.0

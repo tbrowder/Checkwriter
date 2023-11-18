@@ -64,14 +64,17 @@ my (@fields, @lines);
   // as appropriate:
 =end comment
 
+# my check paper values
 my $base-origin-x = 0;
 my $base-origin-y = 546;
 my $page-width    = 612;
 my $page-height   = 792;
+my $chk-height = 792 - 546;
 
-
-my $height = 792 - 546;
+# chk file inputs 
 my $translation;
+my $translation-x;
+my $translation-y;
 my $rotation;
 
 my %grps;
@@ -84,11 +87,16 @@ for $chk.IO.lines {
     when /:i translation \h* '=' (\N+) $/ {
         say "handled1: '$_'" if $debug;
         my $val = ~$0;
+        $val ~~ s:g/';'/ /;
+        my @c = $val.words;
+        $val = @c.join(' ');
         $translation = $val;
+        $translation-x = @c.head;
+        $translation-y = @c.tail;
     }
     when /:i rotation \h* '=' (\N+) $/ {
         say "handled2: '$_'" if $debug;
-        my $val = ~$0;
+        my $val   = ~$0;
         $rotation = $val;
     }
     when /:i height \h* '=' (\N+) $/ {
@@ -118,20 +126,23 @@ for $chk.IO.lines {
     }
 }
 
+=begin comment
+my $base-origin-x = 0;
+my $base-origin-y = 546;
+my $page-width    = 612;
+my $page-height   = 792;
+=end comment
 
 say "Results: ";
-say "  Check height     : $height";
-say "        translation: $translation";
-say "        rotation   : $rotation";
-sub get-coords($v is copy --> List) is export {
-    # valid inputs:
-    #   x;y
-    #   x1;y1;x2;y2
-    # return a list of values
-    my ($x1, $y1, $x2, $y2);
-    $v ~~ s:g/';'/ /;
-    $v.words;
-}
+say "  Page base coords:";
+say "     base-origin-x: $base-origin-x";
+say "     base-origin-y: $base-origin-y";
+say "     page-width   : $page-width";
+say "     page-height  : $page-height";
+say "  Check height    : $chk-height";
+say "     translation-x: $translation-x";
+say "     translation-y: $translation-y";
+say "     rotation     : {$rotation.= trim}";
 
 for %grps.keys.sort -> $g {
     say "  Group $g";
@@ -144,8 +155,8 @@ for %grps.keys.sort -> $g {
             my $c = $v;
             $c ~~ s:g/';'/ /;
             my @c = $c.words;
-            say "      coordinates: {@c.raku}";
-            #say "      coordinates: $v";
+            $c = @c.join(' ');
+            say "      coordinates: $c";
         }
         elsif $k ~~ /:i type / {
             say "      field name: $v";

@@ -133,6 +133,7 @@ my $page-width    = 612;
 my $page-height   = 792;
 =end comment
 
+
 say "Results: ";
 say "  Page base coords:";
 say "     base-origin-x: $base-origin-x";
@@ -144,10 +145,25 @@ say "     translation-x: $translation-x";
 say "     translation-y: $translation-y";
 say "     rotation     : {$rotation.= trim}";
 
+my $csv = "check-dimens.csv";
+my $fh = open $csv, :w;
+# write header row
+$fh.say: "id, type, label, descrip, x1, y1, x2, y2"; 
+
 for %grps.keys.sort -> $g {
     say "  Group $g";
     my %h = %(%grps{$g});
     my ($field, $line) = (False, False);
+
+    # prepare a data line in pieces
+    my $id = "$g";
+
+    my $type    = "";
+    my $label   = "";
+    my $descrip = "";
+    my $coords  = ""; # 4 columns
+
+    my $dataline = "$id, $type, $label, $descrip, $coords";
     for %h.kv -> $k, $v {
         next if $k ~~ /:i chars /;
         #say "    type: $k ; value: $v";
@@ -156,17 +172,45 @@ for %grps.keys.sort -> $g {
             $c ~~ s:g/';'/ /;
             my @c = $c.words;
             $c = @c.join(' ');
-            say "      coordinates: $c";
+            if @c.elems == 4 {
+                $coords = @c.join(',');
+                say "      coord x1 = ", @c[0];
+                say "            y1 = ", @c[1];
+                say "            x2 = ", @c[2];
+                say "            y2 = ", @c[3];
+                $type    = "line";
+                #$descrip = $k;
+            }
+            elsif @c.elems == 2 {
+                say "      coord x1 = ", @c[0];
+                say "            y1 = ", @c[1];
+                $coords = @c[0..1].join(',');
+                $coords ~= ',,';
+                $type    = "field";
+                #$descrip = $k;
+            }
+            else {
+                say "      coordinates: $c";
+                $coords = @c.head;
+                $coords ~= ',,,';
+            }
         }
         elsif $k ~~ /:i type / {
             say "      field name: $v";
+            $label = $v;
         }
         else {
             say "      unhandled type '$k'";
         }
-    }
-    my $o;
-}
+    } # end of a group
+
+    # update the data line
+    $dataline = "$id, $type, $label, $descrip, $coords";
+    $fh.say: $dataline;
+} # end of group list
+
+$fh.close;
+say "See output CSV file: $csv";
 
 =finish
 my $hj = q:to/HERE/;

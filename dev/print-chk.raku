@@ -53,7 +53,24 @@ if $debug {
 
 my (@fields, @lines);
 
-my $height;
+=begin comment
+  // PS points from lower left of check paper to lower-left of the check
+  base-origin: 0 546
+  base-font: t10
+  base-stroke: 0
+  // PS points from lower-left of base-origin to top-left corner of the check
+  top-origin: 0 244
+  // named fields with origin (llx, lly from base-origin), other fields
+  // as appropriate:
+=end comment
+
+my $base-origin-x = 0;
+my $base-origin-y = 546;
+my $page-width    = 612;
+my $page-height   = 792;
+
+
+my $height = 792 - 546;
 my $translation;
 my $rotation;
 
@@ -66,11 +83,16 @@ for $chk.IO.lines {
     # take only lines of interest
     when /:i translation \h* '=' (\N+) $/ {
         say "handled1: '$_'" if $debug;
+        my $val = ~$0;
+        $translation = $val;
     }
     when /:i rotation \h* '=' (\N+) $/ {
         say "handled2: '$_'" if $debug;
+        my $val = ~$0;
+        $rotation = $val;
     }
     when /:i height \h* '=' (\N+) $/ {
+        # don't use this valuu, use mine
         say "handled3: '$_'" if $debug;
     }
     when /^:i \h* (\S+) \h* '=' (\N+) $/ {
@@ -98,6 +120,19 @@ for $chk.IO.lines {
 
 
 say "Results: ";
+say "  Check height     : $height";
+say "        translation: $translation";
+say "        rotation   : $rotation";
+sub get-coords($v is copy --> List) is export {
+    # valid inputs:
+    #   x;y
+    #   x1;y1;x2;y2
+    # return a list of values
+    my ($x1, $y1, $x2, $y2);
+    $v ~~ s:g/';'/ /;
+    $v.words;
+}
+
 for %grps.keys.sort -> $g {
     say "  Group $g";
     my %h = %(%grps{$g});
@@ -106,7 +141,11 @@ for %grps.keys.sort -> $g {
         next if $k ~~ /:i chars /;
         #say "    type: $k ; value: $v";
         if $k ~~ /:i coords / {
-            say "      coordinates: $v";
+            my $c = $v;
+            $c ~~ s:g/';'/ /;
+            my @c = $c.words;
+            say "      coordinates: {@c.raku}";
+            #say "      coordinates: $v";
         }
         elsif $k ~~ /:i type / {
             say "      field name: $v";

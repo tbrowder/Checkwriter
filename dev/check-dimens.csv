@@ -1,4 +1,4 @@
-# test coment
+# test comment
 id, type, label, descrip, x1, y1, x2, y2
 1, line,  PAYEE, , 90.0,102.0,400.0,20.0
 2, field,  AMOUNT_WORDS, , 90.0,132.0,,

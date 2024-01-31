@@ -2,8 +2,8 @@ use v6;
 use Test;
 use Proc::Easier;
 
-use CheckWriter;
-use CheckWriter::Data;
+use Checkwriter;
+use Checkwriter::Data;
 
 my ($cmd, $args);
 

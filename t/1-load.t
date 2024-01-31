@@ -3,6 +3,6 @@ use Test;
 
 plan 1;
 
-use CheckWriter;
+use Checkwriter;
 
-use-ok 'CheckWriter';
+use-ok 'Checkwriter';

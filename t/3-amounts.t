@@ -3,7 +3,7 @@ use Test;
 
 plan 6;
 
-use CheckWriter;
+use Checkwriter;
 
 my $amt;
 

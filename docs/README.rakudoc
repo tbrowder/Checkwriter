@@ -1,6 +1,6 @@
 =begin pod
 
-=head1 CheckWriter
+=head1 Checkwriter
 
 Using Hjson templates similar to the format of the check (*.chk) files
 of L<GnuCash|https://gnucash.org>, this module and its binary programs
@@ -21,8 +21,8 @@ information on banking standards and check specifications.
 =SYNOPSIS
 
 =begin code
-%*ENV<CheckWriterPrivateDir> = "/path/to/private/dir";
-use CheckWriter;
+%*ENV<CheckwriterPrivateDir> = "/path/to/private/dir";
+use Checkwriter;
 checkwriter write-check [interactive process]
 =end code
 

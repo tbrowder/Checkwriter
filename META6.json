@@ -22,12 +22,12 @@
   ],
   "description": "Provides check writing capability.",
   "license": "Artistic-2.0",
-  "name": "CheckWriter",
+  "name": "Checkwriter",
   "perl": "6.*",
   "provides": {
-    "CheckWriter": "lib/CheckWriter.rakumod",
-    "CheckWriter::Data": "lib/CheckWriter/Data.rakumod",
-    "CheckWriter::Handlers": "lib/CheckWriter/Handlers.rakumod"
+    "Checkwriter": "lib/Checkwriter.rakumod",
+    "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
+    "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod"
   },
   "resources": [
     "README",
@@ -38,9 +38,9 @@
     "user-bank.hjson",
     "user-check.json"
   ],
-  "source-url": "https://github.com/tbrowder/CheckWriter.git",
+  "source-url": "https://github.com/tbrowder/Checkwriter.git",
   "support": {
-    "bugtracker": "https://github.com/tbrowder/CheckWriter/issues"
+    "bugtracker": "https://github.com/tbrowder/Checkwriter/issues"
   },
   "tags": [
     "check writer",

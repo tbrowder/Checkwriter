@@ -1,4 +1,4 @@
-unit module CheckWriter::Data;
+unit module Checkwriter::Data;
 
 our @resources-list is export = <
     README

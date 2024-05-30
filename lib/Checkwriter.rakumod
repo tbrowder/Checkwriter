@@ -1,4 +1,4 @@
-unit module CheckWriter;
+unit module Checkwriter;
 
 use Lingua::EN::Numbers;
 use JSON::Class:auth<zef:jonathanstowe>;
@@ -12,7 +12,7 @@ constant CoreFont = PDF::Content::Font::CoreFont;
 
 use Text::Utils :commify;
 
-use CheckWriter::Data;
+use Checkwriter::Data;
 
 role Hdr {
     # common attributes for fields

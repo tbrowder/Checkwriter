@@ -1,5 +1,6 @@
 unit module Checkwriter::Data;
 
+=begin comment
 our @resources-list is export = <
     README
     data.hjson
@@ -9,3 +10,4 @@ our @resources-list is export = <
     user-bank.hjson
     user-check.json
 >;
+=end comment

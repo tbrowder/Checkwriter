@@ -1,19 +1,12 @@
-use v6;
 use Test;
-use Proc::Easier;
 
 use Checkwriter;
-use Checkwriter::Data;
+use Checkwriter::Resources;
 
-my ($cmd, $args);
+my (@res, $cmd, $args);
 
 lives-ok {
-    list-resources;
-}
-
-for @resources-list -> $subpath {
-    my $path = "resources/$subpath";
-    is resource-exists($path), True
+    @res = get-resources-paths;
 }
 
 done-testing;

@@ -27,7 +27,8 @@
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
-    "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod"
+    "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
+    "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod"
   },
   "resources": [
     "README",

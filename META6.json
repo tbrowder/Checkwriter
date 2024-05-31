@@ -12,7 +12,7 @@
     "Ask",
     "Lingua::EN::Numbers",
     "JSON::Hjson",
-    "JSON::Class:auth<zef::vrurg>",
+    "JSON::Class:auth<zef:vrurg>",
     "PDF::Font::Loader",
     "PDF::Lite",
     "PDF::API6",

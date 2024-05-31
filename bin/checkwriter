@@ -5,8 +5,8 @@ use PDF::Lite;
 use Text::Utils;
 use PDF::Font::Loader;
 use FontFactory::Type1;
-use CheckWriter;
-use CheckWriter::Data;
+use Checkwriter;
+use Checkwriter::Resources;
 
 my $usage = "Usage: {$*PROGRAM.basename} mode [options...][help]";
 if !@*ARGS.elems {
@@ -64,7 +64,8 @@ if $write {
 }
 elsif $show {
     say "Resources available for download:";
-    for @resources-list -> $subpath {
+    my @res = get-resources-paths;
+    for @res -> $subpath {
         say "  $subpath";
     }
 }
@@ -76,11 +77,12 @@ elsif $down {
     unless $resdir.IO.d {
         die "FATAL: Cannot create directory '$resdir'";
     }
-    for @resources-list -> $subpath {
+    my @res = get-resources-paths;
+    for @res -> $subpath {
         note "DEBUG: $subpath" if $debug;
         my $path = "resources/$subpath";
         # get the file contents
-        my $str = get-resource-content $path;
+        my $str = get-content $path;
         =begin comment
         if not $str {
             note "ERROR: Unexpected empty string for '$path'";

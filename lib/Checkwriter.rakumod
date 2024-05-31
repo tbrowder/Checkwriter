@@ -2,6 +2,7 @@ unit module Checkwriter;
 
 use Lingua::EN::Numbers;
 use JSON::Class:auth<zef:jonathanstowe>;
+#use JSON::Class:auth<zef:vrurg>;
 use JSON::Hjson;
 use FontFactory::Type1;
 use PDF::API6;

@@ -8,11 +8,11 @@
   "build-depends": [
   ],
   "depends": [
+    "JSON::Class:auth<zef:jonathanstowe>",
     "CSV-Autoclass:ver<0.2.0>",
     "Ask",
     "Lingua::EN::Numbers",
     "JSON::Hjson",
-    "JSON::Class:auth<zef:vrurg>",
     "PDF::Font::Loader",
     "PDF::Lite",
     "PDF::API6",

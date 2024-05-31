@@ -16,7 +16,6 @@
     "PDF::Font::Loader",
     "PDF::Lite",
     "PDF::API6",
-    "PDF::Document",
     "FontFactory::Type1",
     "Text::Utils"
   ],
@@ -31,13 +30,11 @@
     "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod"
   },
   "resources": [
+    "AccountData.hjson",
+    "BlankCheck.hjson",
     "README",
-    "data.hjson",
-    "payee.hjson",
-    "quicken.chk",
-    "user-acct.hjson",
-    "user-bank.hjson",
-    "user-check.json"
+    "Register.json",
+    "quicken.chk"
   ],
   "source-url": "https://github.com/tbrowder/Checkwriter.git",
   "support": {

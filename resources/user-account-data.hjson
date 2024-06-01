@@ -2,7 +2,7 @@
   // THIS IS PRIVATE DATA
   // define its location with environment variable:
   //
-  //    CheckWriterPrivateDir=/some/private/dir
+  //    CHECKWRITER_PRIVATE_DIR=/some/private/dir
   //
   bank-name: WORLD PEACE
   routing-number: 0000000000

@@ -25,7 +25,6 @@ my $cfil;
 my $write  = 0;
 my $show   = 0;
 my $down   = 0;
-sub z{$write=$show=$down=0}
 
 for @*ARGS {
     # options
@@ -41,8 +40,12 @@ for @*ARGS {
         $cfil = ~$0;
     }
     # modes
-    when /^w/  { $write = 1 }
-    when /^s/  { $show  = 1 }
+    when /^w/ { 
+        $write = 1 
+    }
+    when /^s/ { 
+        $show  = 1 
+    }
     when /^d ['=' (\S+)]? / {
         $down = 1;
         if $0.defined {
@@ -65,8 +68,8 @@ if $write {
 elsif $show {
     say "Resources available for download:";
     my @res = get-resources-paths;
-    for @res -> $subpath {
-        say "  $subpath";
+    for @res -> $path {
+        say "  $path";
     }
 }
 elsif $down {
@@ -78,26 +81,24 @@ elsif $down {
         die "FATAL: Cannot create directory '$resdir'";
     }
     my @res = get-resources-paths;
-    for @res -> $subpath {
-        note "DEBUG: $subpath" if $debug;
-        my $path = "resources/$subpath";
+    for @res -> $path {
+        note "DEBUG: $path" if $debug;
+        #my $path = "resources/$subpath";
         # get the file contents
         my $str = get-content $path;
-        =begin comment
         if not $str {
             note "ERROR: Unexpected empty string for '$path'";
             next
         }
         else {
-            say $str
+            say $str if $debug
         }
-        =end comment
 
         # get the required dir for output
-        my $fil = $subpath.IO.basename;
+        my $fil = $path.IO.basename;
         note "DEBUG: fil = '$fil'" if $debug;
-        my $dir = $subpath.IO.dirname;
-        my $odir = "$resdir/$dir";
+        #my $dir = $subpath.IO.dirname;
+        my $odir = "$resdir"; #/$dir";
         note "DEBUG: odir = '$odir'" if $debug;
         unless $odir.IO.d {
             mkdir $odir;
@@ -110,7 +111,7 @@ elsif $down {
 }
 
 ### subroutines ###
-sub help{
+sub help {
     say qq:to/HERE/;
         $usage
 
@@ -136,10 +137,3 @@ sub help{
     HERE
     exit;
 }
-
-sub read-inputs(:$debug) is export {
-    
-}
-
-
-

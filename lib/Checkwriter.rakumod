@@ -2,7 +2,6 @@ unit module Checkwriter;
 
 use Lingua::EN::Numbers;
 use JSON::Class:auth<zef:jonathanstowe>;
-#use JSON::Class:auth<zef:vrurg>;
 use JSON::Hjson;
 use FontFactory::Type1;
 use PDF::API6;
@@ -15,6 +14,7 @@ use Text::Utils :commify;
 
 use Checkwriter::Resources;
 use Checkwriter::Data;
+use Checkwriter::Handlers;
 
 role Hdr {
     # common attributes for fields
@@ -56,6 +56,7 @@ class Line does Hdr does JSON::Class {
 }
 
 class Check {
+    has %.fields;
 
     submethod TWEAK {
     }

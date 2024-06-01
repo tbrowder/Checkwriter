@@ -12,11 +12,33 @@ SYNOPSIS
 
 
 
-    %*ENV<CheckwriterPrivateDir> = "/path/to/private/dir";
+    %*ENV<CHECKWRITER_PRIVATE_DIR> = "/path/to/private/dir";
     use Checkwriter;
     checkwriter write-check [interactive process]
 
-The user's default personal or business bank account and other private information are in the `AccountData.hjson` file, and the records of checks written are in the `Register.json` file. The data to define the physical layout of a printed check are in file `BlankCheck.hjson`. All are shown as examples in the `resources` directory. All the `hjson` input files use the `Hjson` format (see module `JSON::Hjson` for more information).
+The user's default personal or business bank account and other private information are in the three files represented by the three files in the 'resources' directory:
+
+  * 'AccountData.hjson' 
+
+    Contains the bank account data. 
+
+  * 'Register.json' 
+
+    Contains records of checks written.
+
+  * 'BlankCheck.hjson' 
+
+    Contains the data to define the physical layout of a printed check.
+
+The file names are **not** required to be the same but, in any case, they must be provided in the user's `$HOME/.Checkwriter/config.yml` which will be created if it doesn't exist and be populated with the example names. That default file looks like this:
+
+    # file: $HOME/.Checkwriter/config.yml
+    #   file names:
+    account-data: AccountData.hjson
+    check-data: BlankCheck.hjson
+    register-data: Register.json
+
+All are shown as examples in the `resources` directory. All the `hjson` input files use the `Hjson` format (see module `JSON::Hjson` for more information).
 
 Planned features
 ----------------
@@ -39,5 +61,5 @@ LICENSE and COPYRIGHT
 
 Artistic 2.0. See [LICENSE](./LICENSE).
 
-© 2020-2023, Thomas M. Browder, Jr. <tbrowder@acm.org>
+© 2020-2024, Thomas M. Browder, Jr. <tbrowder@acm.org>
 

@@ -1,11 +1,14 @@
 #!/usr/bin/env raku
 
+use Checkwriter;
+
+my $debug   = 0;
 my $home    = %*ENV<HOME>:exists ?? %*ENV<HOME> !! 0;
 unless $home and $home.IO.d {
     die "FATAL: \$HOME is undefined";
 }
 
-my $envvar  = "CHECKWRITER_PRIVATE_DATA";
+my $envvar  = "CHECKWRITER_PRIVATE_DIR";
 my $subdir  = ".Checkwriter";
 my $dir     = "$home/$subdir";
 my $fil     = "config.yml";
@@ -35,6 +38,9 @@ unless $arg ~~ /^ :i b/ {
 
 if %*ENV{$envvar}:exists {
     $dir = %*ENV{$envvar}; 
+    if $debug {
+        say "DEBUG: envvar exists, dir = '$dir'";
+    }
     unless $dir.IO.d {
         say "FATAL: The {$envvar}'s directory $dir is not a directory.";
         exit;
@@ -46,6 +52,9 @@ else {
     unless %*ENV<HOME>:exists {
         say "FATAL: The user's 'HOME' environment variable is not defined,";
         exit;
+    }
+    if $debug {
+        say "DEBUG: envvar NOT found, dir = '$dir'";
     }
     unless $home.IO.d {
         say "FATAL: Unable to access the user's home directory";

@@ -5,6 +5,14 @@ use Checkwriter;
 
 my $debug = 0; 
 
+if not @*ARGS {
+    say "Enter any key to create a check for payment";
+    say "  ('d' or 'D' for debugging)";
+    exit;
+}
+my $arg = @*ARGS.shift;
+$debug = 1 if $arg ~~ /^ :i d/;
+
 # initialize data with defaults
 my $date = Date.new: now;
 my @keys = <date pay-to amount memo>;
@@ -36,6 +44,12 @@ while 1 {
 
 say();
 say "Preparing the check with your inputs...";
+if $debug {
+    my $amount = %inputs<amount>;
+    my $f = Amount.new: :$amount;
+    say "DEBUG: amount is '{$f.amount}'";
+}
+
 # use the inputs to name the PDF file:
 #   check-<bank>-<number>-<date>.pdf
 

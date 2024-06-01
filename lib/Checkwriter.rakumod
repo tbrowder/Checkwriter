@@ -55,9 +55,9 @@ class Line does Hdr does JSON::Class {
     }
 }
 
-class Amount {
-    has Real $.amount is rw = 0;
-    method print {
+class Amount is export {
+    has Real $.amount = 0;
+    method amount {
         sprintf '%0.2f', $!amount;
     }
 }
@@ -206,6 +206,23 @@ sub print-check(Check $c, :$debug) is export {
     }
     $pdf.save-as: $c.pdf-name;
 }
+
+#sub populate(IO::Path $dir, :$debug) is export {
+sub populate($dir, :$debug) is export {
+    unless $dir.IO.d {
+        die qq:to/HERE/;
+        FATAL: Unable to populate directory '$dir'.
+           Please file an issue with details.
+        HERE
+    }
+    # copy the files from dir 'resources' into the dir.
+    # do NOT overwrite existing files
+    # remember to add the config.yml file, too (don't 
+    # forget its contents)
+    if $debug {
+        say "DEBUG: filling dir '$dir' with config files";
+    }
+} # sub populate
 
 =finish
 

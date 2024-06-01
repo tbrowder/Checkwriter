@@ -4,42 +4,16 @@
   These data are used to define the fields and lines on the base
   check before the check is drawn and the following data are entered:
 
-  + date (normally the current date)
-  + check number (normally the next number after the highest number
-    in Register.json)
-  + check number (same as the first, but on the MICR line)
-  + amount (e.g., 132.09)
-  + amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
-
   */
-
-  // PS points from lower left of check paper to lower-left of the check
-  base-origin: 0 546
-  base-font: t10
-  base-stroke: 0
-  // PS points from lower-left of base-origin to top-left corner of the check
-  top-origin: 0 244
-  // named fields with origin (llx, lly from base-origin), other fields
-  // as appropriate:
-
-  //   width (if limited)
-  //   font code from FontFactory::Type1 (if other than base-font)
-  //   print data (only for pre-printed data)
-  //     OR
-  //   line-length
-  //   stroke (if other than base-stroke)
 
   // bank data
   bank-name: {
-    origin: 0 0
     data: private
   }
   routing-number: {
-    origin: 0 0
     data: private
   }
   acount-number: {
-    origin: 0 0
     data: private
   }
   starting-transaction: {

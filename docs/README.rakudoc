@@ -2,12 +2,12 @@
 
 =head1 Checkwriter
 
-Using Hjson templates similar to the format of the check (*.chk) files
+Using templates similar to the format of the check (*.chk) files
 of L<GnuCash|https://gnucash.org>, this module and its binary programs
 allows the user to print checks on standard sizes of paper.
 
 The default is to print a single check on Office Depot's single-check
-paper (US Letter size) using the provided check template file. The
+paper (US Letter size) using the provided check template files. The
 font used is the B<E-13B, Common Machine Language font> in a free (for
 non-commercial use) implementation called the I<MICR Encoding Font>
 provided by B<L<1001
@@ -29,24 +29,21 @@ checkwriter write-check [interactive process]
 =DESCRIPTION
 
 The user's default personal or business bank account and other private
-information are in the three files represented by the three
+information are in the files represented by the
 files in the 'resources' directory:
 
 =begin item
 'user-account-data.hjson'
-
 Contains the bank account data. 
 =end item
 
 =begin item
 'user-register.json'
-
 Contains records of checks written.
 =end item
 
 =begin item
 'user-check-data.hjson'
-
 Contains the data to define the physical layout of a printed check.
 =end item
 
@@ -64,16 +61,23 @@ register-data: user-register.json
 =end code
 
 All are shown as examples in the C<resources>
-directory. All the C<hjson> input files use the C<Hjson> format (see
-module C<JSON::Hjson> for more information).
+directory. All the C<.hjson> input files use the C<Hjson> format (see
+module C<JSON::Hjson> for more information) and the C<.yml> files
+use the C<YAML> format (see module C<YAMLish> for more information).
 
 =head2 Customization
 
 The user is provided usable templates in the 'user-check-data.hjson'
 and 'user-account-data.hjson' files for his or her own use to
 print checks on the Office Depot check paper. Merely change the 
-data to that desired. The 'user-register.json' file will be
+personal data to that desired. The 'user-register.json' file will be
 populated as checks are written.
+
+=head2 Usage
+
+After customizing your account and check data as discussed above,
+you are ready to print a test check to see if all data are 
+correct.
 
 =head2 Planned features
 

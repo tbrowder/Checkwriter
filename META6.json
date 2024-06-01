@@ -17,6 +17,7 @@
     "PDF::Lite",
     "PDF::API6",
     "FontFactory::Type1",
+    "CSV::Table",
     "Text::Utils"
   ],
   "description": "Provides check writing capability.",

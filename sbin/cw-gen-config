@@ -40,6 +40,7 @@ if %*ENV{$envvar}:exists {
         exit;
     }
     # check or populate the directory
+    populate $dir
 }
 else {
     unless %*ENV<HOME>:exists {
@@ -50,9 +51,9 @@ else {
         say "FATAL: Unable to access the user's home directory";
         exit;
     }
-    # check or populate the directory
-
     unless $dir.IO.d {
         mkdir $dir;
     }
+    # check or populate the directory
+    populate $dir
 }

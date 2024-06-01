@@ -55,8 +55,22 @@ class Line does Hdr does JSON::Class {
     }
 }
 
+class Amount {
+    has Real $.amount is rw = 0;
+    method print {
+        sprintf '%0.2f', $!amount;
+    }
+}
+
 class Check {
     has %.fields;
+
+    submethod TWEAK {
+    }
+}
+
+class Register {
+    has %.checks;
 
     submethod TWEAK {
     }
@@ -102,6 +116,11 @@ sub amount2words($amt, :$debug) is export {
 }
 
 sub write-check($cwd, :$pfil, :$ufil, :$cfil, :$debug) is export {
+    my $r      = Register.new;
+    my $number = $r.next-number;
+
+    my $c = Check.new: :$number;
+
     my $pdf = 0;
     return $pdf;
 }

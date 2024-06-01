@@ -26,24 +26,26 @@ use Checkwriter;
 checkwriter write-check [interactive process]
 =end code
 
+=DESCRIPTION
+
 The user's default personal or business bank account and other private
 information are in the three files represented by the three
 files in the 'resources' directory:
 
 =begin item
-'AccountData.hjson' 
+'user-account-data.hjson'
 
 Contains the bank account data. 
 =end item
 
 =begin item
-'Register.json'  
+'user-register.json'
 
 Contains records of checks written.
 =end item
 
 =begin item
-'BlankCheck.hjson'  
+'user-check-data.hjson'
 
 Contains the data to define the physical layout of a printed check.
 =end item
@@ -56,14 +58,22 @@ example names. That default file looks like this:
 =begin code
 # file: $HOME/.Checkwriter/config.yml
 #   file names:
-account-data: AccountData.hjson
-check-data: BlankCheck.hjson
-register-data: Register.json
+account-data: user-account-data.hjson
+check-data: user-check-data.hjson
+register-data: user-register.json
 =end code
 
 All are shown as examples in the C<resources>
 directory. All the C<hjson> input files use the C<Hjson> format (see
 module C<JSON::Hjson> for more information).
+
+=head2 Customization
+
+The user is provided usable templates in the 'user-check-data.hjson'
+and 'user-account-data.hjson' files for his or her own use to
+print checks on the Office Depot check paper. Merely change the 
+data to that desired. The 'user-register.json' file will be
+populated as checks are written.
 
 =head2 Planned features
 

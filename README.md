@@ -18,15 +18,15 @@ SYNOPSIS
 
 The user's default personal or business bank account and other private information are in the three files represented by the three files in the 'resources' directory:
 
-  * 'AccountData.hjson' 
+  * 'user-account-data.hjson'
 
     Contains the bank account data. 
 
-  * 'Register.json' 
+  * 'user-register.json'
 
     Contains records of checks written.
 
-  * 'BlankCheck.hjson' 
+  * 'user-check-data.hjson'
 
     Contains the data to define the physical layout of a printed check.
 
@@ -34,9 +34,9 @@ The file names are **not** required to be the same but, in any case, they must b
 
     # file: $HOME/.Checkwriter/config.yml
     #   file names:
-    account-data: AccountData.hjson
-    check-data: BlankCheck.hjson
-    register-data: Register.json
+    account-data: user-account-data.hjson
+    check-data: user-check-data.hjson
+    register-data: user-register.json
 
 All are shown as examples in the `resources` directory. All the `hjson` input files use the `Hjson` format (see module `JSON::Hjson` for more information).
 

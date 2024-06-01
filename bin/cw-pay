@@ -25,7 +25,13 @@ while 1 {
         say "  $k: $v";
     }
     my $answer = ask "satisfactory (Y/n)? ";
-    last if $answer !~~ /:i n/;
+    if $answer !~~ /:i n/ {
+        say "Good...";
+        last;
+    }
+    else {
+        say "Sorry, try again...";
+    }
 }
 
 say();
@@ -44,9 +50,12 @@ sub get-user-inputs(:%inputs!, :@keys!, :$debug) is export {
 sub get-user-date(Date :$date! is copy, :$debug --> Date) {
     while 1 {
         my $answer = ask "date (default: $date): ";
-        last if not $answer; # user accepts default input
-        # check format
-        if $answer !~~ /^\h* \d**4 '-' \d\d '-' \d\d \h* $/ {
+        if not $answer {
+            # user accepts default input
+            last
+        }
+        elsif $answer !~~ /^\h* \d**4 '-' \d\d '-' \d\d \h* $/ {
+            # check format
             say "  ERROR: enter date as 'yyyy-mm-dd'";
         }
         else {
@@ -57,53 +66,78 @@ sub get-user-date(Date :$date! is copy, :$debug --> Date) {
     $date
 }
 
-sub get-user-pay-to(Str :$pay-to = "", :$debug --> Str) {
-    my $answer;
+sub get-user-pay-to(Str :$pay-to is copy = "", :$debug --> Str) {
+    my $ask-str;
+    if $pay-to {
+        $ask-str = "pay-to (default: $pay-to): ";
+    }
+    else {
+        $ask-str = "pay-to: ";
+    }
     while 1 {
-        if $pay-to {
-            $answer = ask "pay-to (default: $pay-to): ";
-            last if not $answer; # user accepts default input
+        my $answer = ask $ask-str;
+        if not $answer {
+            # user accepts default input
+            last
         }
         else {
-            $answer = ask "pay-to: ";
+            $pay-to = $answer;
             last if $answer and $answer ~~ Str;
             say "  ERROR: input '$answer' is not a string or is empty";
         }
     }
-    $answer;
+    $pay-to;
 }
 
-sub get-user-amount(Real :$amount = 0; :$debug --> Real) {
-    my $answer;
+sub get-user-amount(Real :$amount is copy = 0, :$debug --> Real) {
+    my $ask-str;
+    if $amount {
+        $ask-str = "amount (default: $amount): ";
+    }
+    else {
+        $ask-str = "amount: ";
+    }
     while 1 {
-        if $amount {
-            $answer = ask "amount (default: $amount): ";
-            last if not $answer; # user accepts default input
+        my $answer = ask $ask-str;
+        if not $answer {
+            # user accepts default input
+            last
         }
         else {
-            $answer = ask "amount: ";
-            last if $answer and $answer ~~ Real;
-            say "  ERROR: input $answer is not a number";
+            $amount = $answer;
+            if $amount ~~ Real {
+                # user accepts default input
+                last
+            }
+            else {
+                say "  ERROR: input $amount is not a Real";
+            }
         }
     }
-    $answer
+    $amount
 }
 
-sub get-user-memo(Str :$memo = "", :$debug --> Str) {
-    my $answer;
+sub get-user-memo(Str :$memo is copy  = "", :$debug --> Str) {
+    my $ask-str;
+    if $memo {
+        $ask-str = "memo (default: $memo): ";
+    }
+    else {
+        $ask-str = "memo: ";
+    }
     while 1 {
-        if $memo {
-            $answer = ask "memo (default: $memo): ";
-            last if not $answer; # user accepts default input
+        my $answer = ask $ask-str;
+        if not $answer {
+            # user accepts default input
+            last
         }
         else {
-            $answer = ask "memo: ";
-            last if not $answer; # user accepts empty input
+            $memo = $answer;
             last if $answer and $answer ~~ Str;
             say "  ERROR: input $answer is not a number";
         }
     }
-    $answer
+    $memo
 }
 
 =finish

@@ -2,9 +2,10 @@
 
 use JSON::Hjson;
 use JSON::Fast;
-use JSON::Class:auth<zef:vrurg>;
+#use JSON::Class:auth<zef:vrurg>;
+use JSON::Class:auth<zef:jonathanstowe>;
 
-my $hj = "../resources/BlankCheck.hjson";
+my $hj = "../resources/user-check-data.hjson";
 my $h = from-hjson(slurp $hj);
 for $h.kv -> $k,$v {
     say "key: $k";

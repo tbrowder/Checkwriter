@@ -243,4 +243,5 @@ my $o = O.from-json: slurp($jfil);
 say $o.top;
 say $o.left;
 
-
+#==== subroutines line
+# all subs moved to Checkwriter/Utils.rakumod

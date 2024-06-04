@@ -16,9 +16,6 @@ say "  $_" for |@yfils, |@hfils, |@jfils;
 
 # all hashes should have keys from the same set
 # some MUST have keys from the same subset
-sub get-yml-hash($f --> Hash) is export {} 
-sub get-json-hash($f --> Hash) is export  {} 
-sub get-hjson-hash($f --> Hash) is export  {} 
 # handlers subroutines MUST be defined for all key types
 # handlers may be auto-generated
 
@@ -26,3 +23,8 @@ exit;
 
 #my $hj = "../resources/user-check-data.hjson";
 #my $h = from-hjson(slurp $hj);
+
+#==== subroutines line
+# all subs moved to Checkwriter/Utils.rakumod
+
+

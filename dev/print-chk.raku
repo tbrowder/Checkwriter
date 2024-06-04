@@ -6,7 +6,7 @@ use JSON::Class;
 use File::Find;
 
 use lib <../lib>;
-use CheckWriter;
+use Checkwriter;
 
 my $chk  = "../resources/quicken.chk";
 my $rdir = "../resources";
@@ -32,6 +32,9 @@ my $debug = 0;
 for @*ARGS {
     when /^:i i/ { ++$insp }
     when /^:i d/ { ++$debug }
+    when /^:i g/ { 
+        ; # ok: go
+    }
     default {
       note "WARNING: Unhandled arg '$_'";
     }
@@ -239,6 +242,5 @@ class O does JSON::Class {
 my $o = O.from-json: slurp($jfil);
 say $o.top;
 say $o.left;
-
 
 

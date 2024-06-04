@@ -113,8 +113,7 @@ sub make-page(
     #   day text:
     #     line-space-ratio - 1.05
     #     white-on-black day-of-week - Helvetica-Bold 12 pt
-    #     holidays, birthdays, etc. - Times-Bood 10 pt, indent 5
-    #                               
+    #     holidays, birthdays, etc. - Times-Bood 10 pt, indent 5 #                               
     #     day number - Helvetica 12 pt (outline for "negative" day numbers)
     #                  offset x - 4 pt from the right of cell
     #                  offset y - 12 * line-space-ratio from top of cell
@@ -144,9 +143,6 @@ sub make-page(
     # fill each cell appropriately
     #   create a mapping from day-of-week and week-of-month
     #   to cell in the grid
-
-
-
 
     # must alway restore the CTM
     $gfx.Restore;

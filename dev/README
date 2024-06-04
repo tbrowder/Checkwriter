@@ -1,0 +1,61 @@
+Rethinking input files, outputs, and other products:
+
+Inputs:
+======
+
++ a yml file for account and bank data
+    default file name: account.yml
+    unique key / private value to be printed on a check
+
++ an hjson template for placing data on a check
+    default file name: check.hjson
+
+    unique keys, some are used in the yml files
+      to access the private data
+    other values describe the output objects
+      to be printed
+
++ a yml config file to name actual file names used above
+    required file name: config.yml
+
+Output:
+======
+
++ an output json file for the check register
+    default file name: register.json
+
+Note all files above must be in one of two places, in
+search order:
+
+  1. a directory pointed to by the environment variable
+     CHECKWRITER_PRIVATE_DIR
+  2. directory $HOME/.Checkwriter
+
+The files should be considered static data for one
+or more class instances.
+
+Variables:
+=========
+
++ a temporary hash for transactions
+    unique key / private value to be printed on a check
+      keys: amount
+            pay-to
+            date
+            memo
+
+Classes:
+=======
+
+Need a standard object to describe an origin,
+type, and content on the check.
+
+Need a way to describe relative positioning for
+an object. For example, data that might go on
+a line. Each object should have a unique id
+among the input files..
+
+Need a way to describe relative positioning for
+an object. For example, data that might go on
+a line. Each object should have a unique id
+among the input files..

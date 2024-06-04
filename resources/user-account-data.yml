@@ -4,8 +4,10 @@
 #    CHECKWRITER_PRIVATE_DIR=/some/private/dir
 #
 bank-name: WORLD PEACE
-routing-number: 0000000000
-account-number: 0000000000
+# routing number has 9 digits
+routing-number: 000_000_000
+# account number has 10 digits
+account-number: 000_000_000_0
 
 # starting check number for printed checks
 starting-transaction: 5000

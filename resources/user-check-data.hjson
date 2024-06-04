@@ -11,12 +11,15 @@
     data: private
   }
   routing-number: {
+    // bank specific, 9 digits
+    font: m10
+    length: 0
     data: private
   }
   acount-number: {
-    data: private
-  }
-  starting-transaction: {
+    // 10 digits
+    font: m10
+    length: 0
     data: private
   }
 
@@ -58,17 +61,13 @@
     // unique per check
     origin: 0 0
   }
-  currency-symbol: {
-    // the symbol in front of the number amount
-    // don't use this, add the $ (or othe symbol) in front of the amount when entering it
-    origin: 0 0
-  }
   amount-number: {
     // unique per check
     origin: 0 0
   }
   check-number1: {
     // unique per check
+    // upper-right corner
     origin: 0 0
   }
   check-number2: {

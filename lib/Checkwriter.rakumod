@@ -15,6 +15,7 @@ use Text::Utils :commify;
 use Checkwriter::Resources;
 use Checkwriter::Data;
 use Checkwriter::Handlers;
+use Checkwriter::Utils;
 
 role Hdr {
     # common attributes for fields

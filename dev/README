@@ -6,23 +6,39 @@ Inputs:
 + a yml file for account and bank data
     default file name: account.yml
     unique key / private value to be printed on a check
+    a sample for user customization is in the 'resources' directory
 
 + an hjson template for placing data on a check
     default file name: check.hjson
-
     unique keys, some are used in the yml files
       to access the private data
     other values describe the output objects
       to be printed
+    a sample for user customization is in the 'resources' directory
 
 + a yml config file to name actual file names used above
-    required file name: config.yml
+    REQUIRED file name: config.yml
+    a sample for user customization is in the 'resources' directory
+
+Routines:
+========
+
++ read all sample input files to ensure correctness
+
++ read all user input files to ensure correctness
+
++ print a sample check with user data
+
++ print a sample check with 'resoures' files
+
++ print a real check
 
 Output:
 ======
 
 + an output json file for the check register
     default file name: register.json
+    a sample for perusal is in the 'resources' directory
 
 Note all files above must be in one of two places, in
 search order:

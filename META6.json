@@ -28,7 +28,8 @@
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
-    "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod"
+    "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod",
+    "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod"
   },
   "resources": [
     "README",

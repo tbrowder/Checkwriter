@@ -1,3 +1,3 @@
-Checkwriter::Utils;
+unit module Checkwriter::Utils;
 
 

@@ -7,7 +7,7 @@ of L<GnuCash|https://gnucash.org>, this module and its binary programs
 allows the user to print checks on standard sizes of paper.
 
 The default is to print a single check on Office Depot's single-check
-paper (US Letter size) using the provided check template files. The
+paper (US Letter size) using the provided check template file. The
 font used is the B<E-13B, Common Machine Language font> in a free (for
 non-commercial use) implementation called the I<MICR Encoding Font>
 provided by B<L<1001
@@ -33,17 +33,20 @@ information are in the files represented by the
 files in the 'resources' directory:
 
 =begin item
-'user-account-data.hjson'
+'account.hjson'
+
 Contains the bank account data. 
 =end item
 
 =begin item
-'user-register.json'
+'register.json'
+
 Contains records of checks written.
 =end item
 
 =begin item
-'user-check-data.hjson'
+'check.hjson'
+
 Contains the data to define the physical layout of a printed check.
 =end item
 
@@ -55,9 +58,9 @@ example names. That default file looks like this:
 =begin code
 # file: $HOME/.Checkwriter/config.yml
 #   file names:
-account-data: user-account-data.hjson
-check-data: user-check-data.hjson
-register-data: user-register.json
+account-data:  account.yml
+check-data:    check.hjson
+register-data: register.json
 =end code
 
 All are shown as examples in the C<resources>

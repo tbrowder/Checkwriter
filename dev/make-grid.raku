@@ -67,8 +67,8 @@ my $font2 = $pdf.core-font(:family<Times-Roman>);
 # write the desired pages
 # ...
 # start the document with the first page
-make-page :$pdf, :$PW;
-make-page :$pdf, :$PW;
+make-page :$pdf, :$PW, :$PH, :$LM, :$font, :$font2;
+make-page :$pdf, :$PW, :$PH, :$LM, :$font, :$font2;
 
 my $pages = $pdf.Pages.page-count;
 # save the whole thing with name as desired

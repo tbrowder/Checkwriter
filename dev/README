@@ -68,10 +68,5 @@ type, and content on the check.
 
 Need a way to describe relative positioning for
 an object. For example, data that might go on
-a line. Each object should have a unique id
-among the input files..
-
-Need a way to describe relative positioning for
-an object. For example, data that might go on
-a line. Each object should have a unique id
-among the input files..
+a line. Each object should have a unique key
+among the input files.

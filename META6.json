@@ -33,9 +33,10 @@
   },
   "resources": [
     "README",
-    "user-account-data.hjson",
-    "user-check-data.hjson",
-    "user-register.json",
+    "account.yml",
+    "check.hjson",
+    "register.json",
+    "config.yml",
     "quicken.chk"
   ],
   "source-url": "https://github.com/tbrowder/Checkwriter.git",

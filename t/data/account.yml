@@ -11,7 +11,8 @@ account-number: 000_000_000_0
 
 # starting check number for printed checks
 starting-transaction: 5000
-currency-symbol: '$'
+# may use unicode 0xdddd or 1234?
+currency-symbol: '$' # comment
 currency: dollars
 name1: Robert Burns
 name2: Sally Burns

@@ -4,6 +4,12 @@ use JSON::Hjson;
 use JSON::Fast;
 use YAMLish;
 
+use PDF::API6;
+use PDF::Lite;
+use PDF::Font::Loader;
+use PDF::Content::Color :ColorName, :color;
+use FontFactory::Type1;
+
 sub deg2rad($d) is export { $d * pi / 180 }
 
 sub get-yml-hash($f --> Hash) is export {
@@ -18,8 +24,6 @@ sub get-hjson-hash($f --> Hash) is export  {
     from-hjson($f.IO.slurp)
 } 
 
-
-
 sub make-page(
     PDF::Lite :$pdf!,
 
@@ -27,7 +31,10 @@ sub make-page(
     #Calendar :$cal,
     #UInt :$month, # month number
     :$PW,
-
+    :$PH,
+    :$LM,
+    :$font, 
+    :$font2,
     :$debug,
     
 ) is export {
@@ -117,7 +124,9 @@ sub make-box($_,
 
 sub put-text(
     PDF::Lite::Page :$page!, 
-    :$debug) is export {
+    :$font,
+    :$debug
+) is export {
 
     $page.text: -> $txt {
         $txt.font = $font, 10;

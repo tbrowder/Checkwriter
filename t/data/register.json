@@ -1,7 +1,7 @@
 {
-    "account-number:": 0000000000,
+    "account-number:": "0000000000",
     "check-numbers": {
-        "0000": {
+        "0": {
             "date": "yyyy-mm-dd",
             "amount": 0.00,
             "pay-to": "",

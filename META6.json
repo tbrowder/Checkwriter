@@ -26,6 +26,7 @@
   "perl": "6.*",
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
+    "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
     "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod",

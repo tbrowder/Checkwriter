@@ -1,3 +1,5 @@
+  # Hjson: using for easier handling of hashes and lists
+
   /*
 
   These data are used to define the fields and lines on the base

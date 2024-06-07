@@ -8,13 +8,11 @@
   "build-depends": [
   ],
   "depends": [
-    "JSON::Fast",
-    "YAMLish",
     "JSON::Class:auth<zef:jonathanstowe>",
-    "CSV-Autoclass:ver<0.2.0>",
-    "Ask",
-    "Lingua::EN::Numbers",
+    "JSON::Fast",
     "JSON::Hjson",
+    "Lingua::EN::Numbers",
+    "YAMLish",
     "PDF::Font::Loader",
     "PDF::Lite",
     "PDF::API6",
@@ -31,6 +29,7 @@
     "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
+    "Checkwriter::PayTo": "lib/Checkwriter/PayTo.rakumod",
     "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod",
     "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod"
   },

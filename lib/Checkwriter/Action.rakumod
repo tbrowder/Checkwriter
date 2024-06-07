@@ -68,7 +68,7 @@ multi sub action(@args, :$debug) is export {
         note "DEBUG: write check..." if $debug;
         # need to get the three input files located
         my $curdir = $*CWD;
-        my $pdf = write-check $curdir, :$afil, :$cfil, :$debug;
+        my $pdf = payee $curdir, :$afil, :$cfil, :$debug;
         say "See check file: $pdf";
     }
     elsif $show {
@@ -123,16 +123,20 @@ sub help() {
         $usage
 
         Modes
-          w       - write a check to a PDF
+          dr      - write a draft check (register will not be affected)
+          p       - write a check to a payee (register WILL be affected)
+          del     - delete a check from the register (sets its amount to zero
+                      and adds a dated note to the 'memo' record; offers to
+                      add user comments)
           s       - shows a list of the module's resources
-          d[=DIR] - downloads the module's resources to the current directory
+          do[=DIR] - downloads the module's resources to the current directory
                       in a 'resources' subdirectory or the DIR directory
         Options
           a=A     - use the A file (in Hjson format) to define the user's bank account
-                      information (default: data/user-acct.hjson)
+                      information (default: data/cct.hjson)
           c=C     - use the C file (in Hjson format) to define the user's check
                       information (default: data/user-check.hjson)
-          D       - debug
+          deb     - debug
 
         Note: If the 'user*' and 'payee*' files don't exist the default files are:
                 resources/example-payee.hjson
@@ -141,4 +145,3 @@ sub help() {
 
     HERE
 }
-

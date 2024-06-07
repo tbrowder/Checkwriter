@@ -1,9 +1,14 @@
 #!/usr/bin/env raku
 
+note "File '$*FILE' is turned off and OBSOLETE!!";
+
+=begin comment
+
 use Ask;
 use Checkwriter;
+use Checkwriter::PayTo;
 
-my $debug = 0; 
+my $debug = 0;
 
 if not @*ARGS {
     say "Enter any key to create a check for payment";
@@ -223,7 +228,7 @@ sub help{
         $usage
 
         Modes
-          w       - write a check to a PDF 
+          w       - write a check to a PDF
           s       - shows a list of the module's resources
           d[=DIR] - downloads the module's resources to the current directory
                       in a 'resources' subdirectory or the DIR directory
@@ -240,14 +245,12 @@ sub help{
                 resources/example-payee.hjson
                 resources/example-user-acct.hjson
                 resources/example-user-check.hjson
-      
+
     HERE
     exit;
 }
 
 sub read-inputs(:$debug) is export {
-    
+
 }
-
-
-
+=end comment

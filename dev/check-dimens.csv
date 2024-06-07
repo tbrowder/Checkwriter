@@ -1,7 +1,7 @@
-id, type, label, descrip, x1, y1, x2, y2
-1, line,  PAYEE, , 90.0,102.0,400.0,20.0
-2, field,  AMOUNT_WORDS, , 90.0,132.0,,
-3, field,  AMOUNT_NUMBER, , 500.0,102.0,,
-4, field,  DATE, , 500.0,67.0,,
-5, field,  NOTES, , 50.0,212.0,,
-6, field,  ADDRESS, , 90.0,192.0,,
+"id"," type"," label"," descrip"," x1"," y1"," x2"," y2"
+"1"," line","  PAYEE"," ","90","102","400","20"
+"2"," field","  AMOUNT_WORDS"," ","90","132",,
+"3"," field","  AMOUNT_NUMBER"," ","500","102",,
+"4"," field","  DATE"," ","500","67",,
+"5"," field","  NOTES"," ","50","212",,
+"6"," field","  ADDRESS"," ","90","192",,

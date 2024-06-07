@@ -1,114 +1,166 @@
-  # Hjson: using for easier handling of hashes and lists
+# Hjson: using for easier handling of hashes and lists
 
-  /*
+# Note: Add curly braces at first and last lines if your system has
+#       trouble with bare Hjson.
 
-  These data are used to define the fields and lines on the base
-  check before the check is drawn and the following data are entered:
+/*
 
-  + date (normally the current date)
-  + check number (normally the next number after the highest number
-    in Register.json)
-  + check number (same as the first, but on the MICR line)
-  + amount (e.g., 132.09)
-  + amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
+These data are used to define the fields and lines on the base
+check before the check is drawn and the following data are entered:
 
-  */
++ date (normally the current date)
++ check number (normally the next number after the highest number
+  in Register.json)
++ check number (same as the first, but on the MICR line)
++ amount (e.g., 132.09)
++ amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
 
-  // PS points from lower left of check paper to lower-left of the check
-  base-origin: 0 546
-  base-font: t10
-  base-stroke: 0
-  // PS points from lower-left of base-origin to top-left corner of the check
-  top-origin: 0 244
-  // named fields with origin (llx, lly from base-origin), other fields
-  // as appropriate:
+*/
 
-  //   width (if limited)
-  //   font code from FontFactory::Type1 (if other than base-font)
-  //   print data (only for pre-printed data)
-  //     OR
-  //   line-length
-  //   stroke (if other than base-stroke)
+// PS points from lower left of check paper to lower-left of the check
+base-origin: 0 546
+base-font: t10
+base-stroke: 0
+// PS points from lower-left of base-origin to top-left corner of the check
+top-origin: 0 244
+// named fields with origin (llx, lly from base-origin), other fields
+// as appropriate:
 
-  // bank data
-  bank-name: {
-    origin: 0 0
-    data: private
-  }
-  routing-number: {
-    // bank specific, 9 digits
-    origin: 0 0
-    font: m10
-    length: 0
-    data: private
-  }
-  account-number: {
-    // 10 digits
-    origin: 0 0
-    font: m10
-    length: 0
-    data: private
-  }
+//   width (if limited)
+//   font code from FontFactory::Type1 (if other than base-font)
+//   print data (only for pre-printed data)
+//     OR
+//   line-length
+//   stroke (if other than base-stroke)
 
-  // account holder data
-  name1: {
-    origin: 0 0
-    data: private
-    font: tb11
-  }
-  name2: {
-    origin: 0 0
-    data: private
-    font: tb11
-  }
-  address1: {
-    origin: 0 0
-    data: private
-  }
-  address2: {
-    origin: 0 0
-    data: private
-  }
-  address3: {
-    origin: 0 0
-    data: private
-  }
+# All objects have an ID number to match my check template.
+# Starting with 21.
 
-  // data entered per check drawn
-  date: {
-    // unique per check
-    origin: 0 0
-  }
-  amount-words: {
-    // unique per check
-    origin: 0 0
-  }
-  amount-number: {
-    // unique per check
-    origin: 0 0
-  }
+// bank data
+bank-name: {
+  id: 9
+  origin: 0 0
+  data: private
+}
+routing-number: {
+  // bank specific, 9 digits
+  id: 11
+  origin: 0 0
+  font: m10
+  length: 0
+  data: private
+}
+account-number: {
+  id: 12
+  // 10 digits
+  origin: 0 0
+  font: m10
+  length: 0
+  data: private
+}
 
-  check-number1: {
-    // unique per check
-    // upper-right corner
-    origin: 0 0
-  }
-  check-number2: {
-    // unique per check
-    // MUST be same as number1
-    origin: 0 0
-    font: m10
-    length: 0
-  }
+// account holder data
+name1: {
+  id: 1
+  origin: 0 0
+  data: private
+  font: tb11
+}
+name2: {
+  id: 2
+  origin: 0 0
+  data: private
+  font: tb11
+}
+address1: {
+  id: 3
+  // ADDRESS per GNUCASH
+  origin: 90 192
+  data: private
+}
+address2: {
+  id: 4
+  origin: 0 0
+  data: private
+}
+address3: {
+  id: 5
+  origin: 0 0
+  data: private
+}
 
-  // underscore lines
-  //   memo line
-  memo-line: {
-    origin: 0 0
-    length: 0  # trailing comment works ONLY following a number
-  }
+// data entered per check drawn
+payee: {
+  id: 17
+  // PAYEE per GNUCASH
+  // unique per check
+  origin: 90 102
+}
+date: {
+  id: 19
+  // DATE per GNUCASH
+  // unique per check
+  origin: 500 67
+}
+amount-words: {
+  id: 8
+  // AMOUNT_WORDS per GNUCASH
+  // unique per check
+  origin: 90 132
+}
+amount-number: {
+  id: 16
+  // AMOUNT_NUMBER per GNUCASH
+  // unique per check
+  origin: 500 102
+}
+
+check-number1: {
+  id: 20
+  // unique per check
+  // upper-right corner
+  origin: 0 0
+}
+check-number2: {
+  id: 13
+  // unique per check
+  // MUST be same as number1
+  origin: 0 0
+  font: m10
+  length: 0
+}
+
+// underscore lines
+// and boxes
+//   memo line
+memo-box: {
+  id: 10
+  // NOTES per GNUCASH
+  origin: 50 212
+  length: 0  # trailing comment works ONLY following a number
+}
+signature-line: {
+  id: 14
   //   signature line
-  signature-line: {
-    origin: 0 0
-    length: 0
-  }
+  origin: 0 0
+  length: 0
+}
+
+// missing fields: 6 7 15 18 21
+PAY-TO-THE: { 
+  id: 6 
+}
+TO-THE-ORDER: { 
+  id: 7 
+}
+currency-word: { 
+  id: 15 
+}
+date-small-word: { 
+  id: 18 
+}
+special-bank-number: { 
+  // on my check:  xx-xxx-xxx # mixture of bank routing number parts
+  id: 21 
+}
+

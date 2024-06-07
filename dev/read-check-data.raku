@@ -29,7 +29,7 @@ my @yfils = find :$dir, :type<file>, :name(/:i '.' [yml|yaml] $/);
 my @jfils = find :$dir, :type<file>, :name(/:i '.' [json] $/);
 my @hfils = find :$dir, :type<file>, :name(/:i '.' [hjson] $/);
 
-if $debug {
+if $debug > 1 {
     say "../resources files:";
     say "  $_" for |@yfils, |@hfils, |@jfils;
 }
@@ -41,18 +41,46 @@ my $j1 = "../resources/register.json";
 
 # The 'check.hjson' file should have ALL known keys used by
 #   the 'account.yml' file.
+my $nfields = 21;
 my %h1 = from-hjson $h1.IO.slurp;
 if $debug {
+    # check out the check for 1 through $nfields
+    my %id;
     for %h1.kv -> $k, $v {
         my $n = $v.^name;
-        say "Note: primary key '$k' has a value type of '$n'";
+        say "Note: primary key '$k' has a value type of '$n'" if $debug > 1;
+        if $n eq 'Hash' {
+            my %o = %h1{$k};
+            my $id = 0;
+            unless %o<id>:exists {
+                say "WARNING: field $k has NO id key";
+                next;
+            }
+            $id = %o<id>;
+            if %id{$id}:exists {
+                say "WARNING: field id $id is duplicated!";
+            }
+            else {
+                %id{$id} = $k;
+            }
+        }
     }
+    my $nid = %id.elems;
+    if $nid != $nfields {
+        say "WARNING: Expected $nfields but got $nid";
+    }
+    my @id = %id.keys.sort({$^a <=> $^b});
+    for @id {
+        my $f = %id{$_};
+        say "$f id: $_";
+    }
+
 }
 
 my %y1 = load-yaml $y1.IO.slurp;
 for %y1.kv -> $k, $v {
     my $n = $v.^name;
-    say "Note: primary key '$k' has a value type of '$n'" if $debug;
+    say "Note: primary key '$k' has a value type of '$n'" if $debug > 1;
     unless %h1{$k}:exists {
         # starting-transaction only used in account data
         next if $k.contains("starting-");

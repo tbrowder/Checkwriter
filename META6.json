@@ -8,6 +8,8 @@
   "build-depends": [
   ],
   "depends": [
+    "JSON::Fast",
+    "YAMLish",
     "JSON::Class:auth<zef:jonathanstowe>",
     "CSV-Autoclass:ver<0.2.0>",
     "Ask",

@@ -11,10 +11,11 @@ account-number: 000_000_000_0
 
 # starting check number for printed checks
 starting-transaction: 5000
-currency-symbol: $
+# may use unicode 0xdddd or 1234?
+currency-symbol: '$' # comment
+currency: dollar
 name1: Robert Burns
 name2: Sally Burns
 address1: 123 Baker St
 address2: Bishop FL 99999-9999
-address3:
-address4:
+address3: 0

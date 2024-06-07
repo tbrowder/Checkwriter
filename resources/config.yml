@@ -1,3 +1,3 @@
-{
-
-}
+check-file: check.hjson
+account-file: account.yml
+resister-file: register.json

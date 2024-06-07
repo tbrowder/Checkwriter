@@ -5,10 +5,11 @@ use JSON::Hjson;
 use JSON::Fast;
 use YAMLish;
 
-my $y1 = "t/data/config.yml";
-my $y2 = "t/data/account.yml";
-my $h1 = "t/data/check.hjson";
-my $j1 = "t/data/register.json";
+my ($y1, $y2, $h1, $j1);
+$y1 = "resources/config.yml";
+$y2 = "resources/account.yml";
+$h1 = "resources/check.hjson";
+$j1 = "resources/register.json";
 
 # yaml files
 my %y1 = load-yaml $y1.IO.slurp;
@@ -26,6 +27,11 @@ for %y2.kv -> $k, $v {
 # hjson
 my %h1 = from-hjson $h1.IO.slurp;
 isa-ok %h1, Hash;
+for %h1<memo-line>.kv -> $k, $v {
+    if $k.contains("length") {
+        is $v, 0, "Hjson handles trailing comments"; 
+    }
+}
 
 # json register
 my %j1 = from-json $j1.IO.slurp;

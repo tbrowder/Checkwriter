@@ -8,12 +8,10 @@ use FontFactory::Type1;
 use Checkwriter;
 use Checkwriter::Resources;
 
-my $usage = print qq:to/HERE/;
-    Usage: {$*PROGRAM.basename} mode [options...][help]
-    HERE
+my $usage = "Usage: {$*PROGRAM.basename} mode [options...][help]";
 
 multi sub action(:$debug) is export {
-    $usage
+    print $usage
 }
 
 multi sub action(@args, :$debug) is export {
@@ -27,6 +25,7 @@ multi sub action(@args, :$debug) is export {
     my $write  = 0;
     my $show   = 0;
     my $down   = 0;
+    my $help   = 0;
 
     for @args {
         #=== options
@@ -34,7 +33,7 @@ multi sub action(@args, :$debug) is export {
             $debug = 1;
         }
         when /^h/ {
-            &help
+            ++$help;
         }
         when /^'a=' (\S+) / {
             $afil = ~$0;
@@ -62,7 +61,10 @@ multi sub action(@args, :$debug) is export {
         }
     }
 
-    if $write {
+    if $help {
+        &help();
+    }
+    elsif $write {
         note "DEBUG: write check..." if $debug;
         # need to get the three input files located
         my $curdir = $*CWD;
@@ -117,7 +119,7 @@ multi sub action(@args, :$debug) is export {
 
 ### subroutines ###
 sub help() {
-    say qq:to/HERE/;
+    print qq:to/HERE/;
         $usage
 
         Modes
@@ -138,6 +140,5 @@ sub help() {
                 resources/example-user-check.hjson
 
     HERE
-    exit;
 }
 

@@ -29,7 +29,7 @@ my %h1 = from-hjson $h1.IO.slurp;
 isa-ok %h1, Hash;
 for %h1<memo-line>.kv -> $k, $v {
     if $k.contains("length") {
-        is $v, 0, "Hjson handles trailing comments"; 
+        is $v, 0, "Hjson handles SOME trailing comments"; 
     }
 }
 

@@ -103,7 +103,7 @@
   //   memo line
   memo-line: {
     origin: 0 0
-    length: 0  # trailing comment
+    length: 0  # trailing comment works ONLY following a number
   }
   //   signature line
   signature-line: {

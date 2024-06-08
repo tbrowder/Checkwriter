@@ -41,7 +41,7 @@ my $j1 = "../resources/register.json";
 
 # The 'check.hjson' file should have ALL known keys used by
 #   the 'account.yml' file.
-my $nfields = 21;
+my $nfields = 22;
 my %h1 = from-hjson $h1.IO.slurp;
 if $debug {
     # check out the check for 1 through $nfields

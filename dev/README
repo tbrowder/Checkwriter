@@ -3,12 +3,12 @@ Rethinking input files, outputs, and other products:
 Inputs:
 ======
 
-+ a yml file for account and bank data
++ A yml file for account and bank data
     default file name: account.yml
     unique key / private value to be printed on a check
     a sample for user customization is in the 'resources' directory
 
-+ an hjson template for placing data on a check
++ An hjson template for placing data on a check
     default file name: check.hjson
     unique keys, some are used in the yml files
       to access the private data
@@ -16,7 +16,13 @@ Inputs:
       to be printed
     a sample for user customization is in the 'resources' directory
 
-+ a yml config file to name actual file names used above
+    The file should clearly separate those elements used to 
+    create a "blank" check for improved performance. 
+    A  default example blank check should be in the 'resources'
+    directory for download. distinguish names as 'example-check.pdf'
+    and 'blank-check.pdf'. User-created checks will be named 'check-nnnn.pdf'.
+
++ A yml config file to name actual file names used above
     REQUIRED file name: config.yml
     a sample for user customization is in the 'resources' directory
 
@@ -29,7 +35,7 @@ Routines:
 
 + print a sample check with user data
 
-+ print a sample check with 'resoures' files
++ print a sample check with 'resources' files
 
 + print a real check
 

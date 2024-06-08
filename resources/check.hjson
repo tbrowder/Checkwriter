@@ -5,15 +5,24 @@
 
 /*
 
-These data are used to define the fields and lines on the base
-check before the check is drawn and the following data are entered:
+The data in the hash-keyed fields below describe all 21 objects
+currently defined on a finished check. Most are included on
+the "blank-check.pdf" which must be produced first.
+Such fields have a subfield of 'blank: 1'.
+
+The following six data elements are used to define the fields which are
+added for each check produced for payment and overwritten on
+the blank check. Note they will NOT have a subfield named 'blank'.:
 
 + date (normally the current date)
-+ check number (normally the next number after the highest number
-  in Register.json)
-+ check number (same as the first, but on the MICR line)
-+ amount (e.g., 132.09)
++ check-number (normally the next number after the highest number
+  in register.json)
++ check-number2 (same as the first, but on the MICR line)
++ amount-number (e.g., 132.09)
 + amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
++ payee
+
+Note: In the future, an image may be allowed for the signature.
 
 */
 
@@ -23,6 +32,17 @@ base-font: t10
 base-stroke: 0
 // PS points from lower-left of base-origin to top-left corner of the check
 top-origin: 0 244
+width: 
+height: 
+
+my-width:
+my-height:
+
+x-ratio:
+y-ratio:
+
+# data from the author's personal check are in the fields below
+
 // named fields with origin (llx, lly from base-origin), other fields
 // as appropriate:
 
@@ -33,18 +53,20 @@ top-origin: 0 244
 //   line-length
 //   stroke (if other than base-stroke)
 
-# All objects have an ID number to match my check template.
-# Starting with 21.
+# All objects have an ID number to match the check template.
+# The current object count is 21.
 
 // bank data
 bank-name: {
   id: 9
+  blank: 1
   origin: 0 0
   data: private
 }
 routing-number: {
   // bank specific, 9 digits
   id: 11
+  blank: 1
   origin: 0 0
   font: m10
   length: 0
@@ -52,6 +74,7 @@ routing-number: {
 }
 account-number: {
   id: 12
+  blank: 1
   // 10 digits
   origin: 0 0
   font: m10
@@ -62,29 +85,34 @@ account-number: {
 // account holder data
 name1: {
   id: 1
+  blank: 1
   origin: 0 0
   data: private
   font: tb11
 }
 name2: {
   id: 2
+  blank: 1
   origin: 0 0
   data: private
   font: tb11
 }
 address1: {
   id: 3
+  blank: 1
   // ADDRESS per GNUCASH
   origin: 90 192
   data: private
 }
 address2: {
   id: 4
+  blank: 1
   origin: 0 0
   data: private
 }
 address3: {
   id: 5
+  blank: 1
   origin: 0 0
   data: private
 }
@@ -124,7 +152,7 @@ check-number1: {
 check-number2: {
   id: 13
   // unique per check
-  // MUST be same as number1
+  // MUST be the same as number1
   origin: 0 0
   font: m10
   length: 0

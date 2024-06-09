@@ -216,6 +216,13 @@ sub populate($dir, :$debug) is export {
            Please file an issue with details.
         HERE
     }
+
+    # TODO check and ask the user to add private account info.
+    #   The default zero values must be filled before and personal
+    #   can be written!! Note there will be some exceptions:
+    #     + second name
+    #     + third address line
+
     # copy the files from dir 'resources' into the dir.
     # do NOT overwrite existing files
     # remember to add the config.yml file, too (don't 

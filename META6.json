@@ -31,7 +31,9 @@
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
     "Checkwriter::PayTo": "lib/Checkwriter/PayTo.rakumod",
     "Checkwriter::Resources": "lib/Checkwriter/Resources.rakumod",
-    "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod"
+    "Checkwriter::Template": "lib/Checkwriter/Template.rakumod",
+    "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod",
+    "Checkwriter::Vars": "lib/Checkwriter/Vars.rakumod"
   },
   "resources": [
     "README",

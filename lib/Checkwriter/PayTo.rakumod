@@ -1,7 +1,6 @@
 unit module Checkwriter::PayTo;
 
 use Checkwriter;
-use Checkwriter::Conversations;
 
 # the entry sub
 sub pay-to($curdir, :$afil, :$cfil, :$debug) is export {
@@ -42,9 +41,11 @@ sub pay-to($curdir, :$afil, :$cfil, :$debug) is export {
         say "DEBUG: amount is '{$f.amount}'";
     }
 
-    note qq:to/HERE;
     my $df = $*FILE;
     my $sr = &?ROUTINE.name;
+    note qq:to/HERE/;
+    in file '$df'
+    in sub  '$sr'
     Tom, finish this file: $df
     in subroutine: $sr
     HERE
@@ -69,9 +70,9 @@ sub get-user-date(Date :$date! is copy, :$debug --> Date) {
         my $answer = prompt "date (default: $date): ";
         if not $answer {
             # user accepts default input
-            last
+            last;
         }
-        elsif $answer !~~ /^\h* \d**4 '-' \d\d '-' \d\d \h* $/ {
+        elsif $answer !~~ /^\h* \d ** 4 '-' \d\d '-' \d\d \h* $/ {
             # check format
             say "  ERROR: enter date as 'yyyy-mm-dd'";
         }

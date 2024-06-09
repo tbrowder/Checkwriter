@@ -7,6 +7,7 @@ use PDF::Font::Loader;
 use FontFactory::Type1;
 use Checkwriter;
 use Checkwriter::Resources;
+use Checkwriter::PayTo;
 
 my $usage = "Usage: {$*PROGRAM.basename} mode [options...][help]";
 
@@ -68,7 +69,7 @@ multi sub action(@args, :$debug) is export {
         note "DEBUG: write check..." if $debug;
         # need to get the three input files located
         my $curdir = $*CWD;
-        my $pdf = payee $curdir, :$afil, :$cfil, :$debug;
+        my $pdf = pay-to $curdir, :$afil, :$cfil, :$debug;
         say "See check file: $pdf";
     }
     elsif $show {
@@ -123,6 +124,7 @@ sub help() {
         $usage
 
         Modes
+          b       - write a blank check with default dummy values
           dr      - write a draft check (register will not be affected)
           p       - write a check to a payee (register WILL be affected)
           del     - delete a check from the register (sets its amount to zero
@@ -133,9 +135,9 @@ sub help() {
                       in a 'resources' subdirectory or the DIR directory
         Options
           a=A     - use the A file (in Hjson format) to define the user's bank account
-                      information (default: data/cct.hjson)
+                      information (default: data/acctount.hjson)
           c=C     - use the C file (in Hjson format) to define the user's check
-                      information (default: data/user-check.hjson)
+                      information (default: data/check.hjson)
           deb     - debug
 
         Note: If the 'user*' and 'payee*' files don't exist the default files are:

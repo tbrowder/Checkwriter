@@ -82,6 +82,41 @@ After customizing your account and check data as discussed above,
 you are ready to print a test check to see if all data are 
 correct.
 
+=head2 For non-US use
+
+The author is happy to ensure everyone can use Checkwriter. 
+
+Non-western languages can be accomodated, but it will take a
+while to determine your exact needs. It would be best to use
+personal email and one of the Raku IRC channels for coordination.
+
+Note the check writing dialog has an option to allow the user to enter
+the text to be used for the amount in words. There is also a field
+in the '' file to specify the currency symbol by actual character
+or its hexadecimal code.
+
+In all cases, the following must be specified:
+
+=item Size of the paper to be used (width X height)
+=item Size of the desired check image (width X height)
+=item Origin of the lower-left corner of the desired check image's
+      location on the paper relative to the lower left corner
+      of the paper (0, 0)
+
+All dimensions should be given in PostScript points (72 per inch)
+
+To
+do so, interested parties will have to help in the following ways:
+
+=item Install the Freefonts on your system (Debian package 'free-fonts-otf'). 
+=item Provide the complete path to your desired font as installed on
+   your system.
+=item Provide the width and length of the desired check image (in PostScript points: 72 points per inch).
+
+To use the module for non-US countries, you can install the 
+Freefont Serif, Sans, and Mono fonts (Debian package 'free-fonts-otf'). 
+Then install (or reinstall) this package.
+
 =head2 Planned features
 
 =item Ability to print multiple checks in one batch
@@ -89,6 +124,8 @@ correct.
 =item Ability to use multiple checking accounts
 =item Ability to use other fonts and currency symbols for other world regions
 
+If any person is interested in making this program more useful for
+non-US use, he or she can help by providing 
 =head2 Contributing
 
 Interested users are encouraged to contribute improvements and

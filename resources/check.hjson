@@ -5,24 +5,31 @@
 
 /*
 
-The data in the hash-keyed fields below describe all 21 objects
-currently defined on a finished check. Most are included on
-the "blank-check.pdf" which must be produced first.
-Such fields have a subfield of 'blank: 1'.
+The data in the hash-keyed fields below describe all 22 objects
+currently defined on a finished check. Most are included on the
+"blank-check.pdf" which must be produced first.  Such fields have a
+subfield of 'blank: 1'.
 
-The following six data elements are used to define the fields which are
-added for each check produced for payment and overwritten on
-the blank check. Note they will NOT have a subfield named 'blank'.:
-
-+ date (normally the current date)
-+ check-number (normally the next number after the highest number
-  in register.json)
-+ check-number2 (same as the first, but on the MICR line)
-+ amount-number (e.g., 132.09)
-+ amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
-+ payee
+The following seven data elements are used to define the fields which
+are added for each check produced for payment and overwritten on the
+blank check. Note they will NOT have a subfield named 'blank':
 
 Note: In the future, an image may be allowed for the signature.
+
++ 19 - date (normally the current date)
++ 20 - check-number1 (normally the next number after the highest number
+       in register.json)
++ 13 - check-number2 (same as the first, but on the MICR line)
++ 16 - amount-number (e.g., 132.09)
++ 17 - payee
++  8 - amount-words (e.g., ONE-HUNDRED THIRTY-TWO and 9/100)
++ 22 - memo words
+
+IDs as an ordered list: 8, 13, 16, 17, 19, 20, 22
+
+The remainder of the elements are fixed for an account and can be
+used to create a fixed PDF file (a template) into which the per-check items
+are inserted.
 
 */
 
@@ -32,14 +39,14 @@ base-font: t10
 base-stroke: 0
 // PS points from lower-left of base-origin to top-left corner of the check
 top-origin: 0 244
-width: 
-height: 
+width: 0
+height: 0
 
-my-width:
-my-height:
+my-width: 0
+my-height: 0
 
-x-ratio:
-y-ratio:
+x-ratio: 1
+y-ratio: 1
 
 # data from the author's personal check are in the fields below
 
@@ -54,8 +61,58 @@ y-ratio:
 //   stroke (if other than base-stroke)
 
 # All objects have an ID number to match the check template.
-# The current object count is 21.
 
+# The current object count is 22.
+
+// unique per check (6 fields) =======================
+// data entered per check drawn
+payee: {
+  id: 17
+  // PAYEE per GNUCASH
+  // unique per check
+  origin: 90 102
+}
+date: {
+  id: 19
+  // DATE per GNUCASH
+  // unique per check
+  origin: 500 67
+}
+amount-words: {
+  id: 8
+  // AMOUNT_WORDS per GNUCASH
+  // unique per check
+  origin: 90 132
+}
+amount-number: {
+  id: 16
+  // AMOUNT_NUMBER per GNUCASH
+  // unique per check
+  origin: 500 102
+}
+memo-words: {
+  id: 22
+  // unique per check, default: ""
+  origin: 0 0
+  width: 0
+}
+
+check-number1: {
+  id: 20
+  // unique per check
+  // upper-right corner
+  origin: 0 0
+}
+check-number2: {
+  id: 13
+  // unique per check
+  // MUST be the same as number1
+  origin: 0 0
+  font: m10
+  length: 0
+}
+
+// ===================================================
 // bank data
 bank-name: {
   id: 9
@@ -117,53 +174,14 @@ address3: {
   data: private
 }
 
-// data entered per check drawn
-payee: {
-  id: 17
-  // PAYEE per GNUCASH
-  // unique per check
-  origin: 90 102
-}
-date: {
-  id: 19
-  // DATE per GNUCASH
-  // unique per check
-  origin: 500 67
-}
-amount-words: {
-  id: 8
-  // AMOUNT_WORDS per GNUCASH
-  // unique per check
-  origin: 90 132
-}
-amount-number: {
-  id: 16
-  // AMOUNT_NUMBER per GNUCASH
-  // unique per check
-  origin: 500 102
-}
-
-check-number1: {
-  id: 20
-  // unique per check
-  // upper-right corner
-  origin: 0 0
-}
-check-number2: {
-  id: 13
-  // unique per check
-  // MUST be the same as number1
-  origin: 0 0
-  font: m10
-  length: 0
-}
-
 // underscore lines
 // and boxes
 //   memo line
 memo-box: {
   id: 10
+  blank: 1
   // NOTES per GNUCASH
+  // may include word MEMO
   origin: 50 212
   length: 0  # trailing comment works ONLY following a number
 }
@@ -175,20 +193,24 @@ signature-line: {
 }
 
 // missing fields: 6 7 15 18 21
-PAY-TO-THE: { 
-  id: 6 
+PAY-TO-THE: {
+  // the words
+  id: 6
 }
-TO-THE-ORDER: { 
-  id: 7 
+TO-THE-ORDER: {
+  // the words
+  id: 7
 }
-currency-word: { 
-  id: 15 
+currency-word: {
+  // the word
+  id: 15
 }
-date-small-word: { 
-  id: 18 
+date-small-word: {
+  // the word
+  id: 18
 }
-special-bank-number: { 
+special-bank-number: {
   // on my check:  xx-xxx-xxx # mixture of bank routing number parts
-  id: 21 
+  id: 21
+  data: blank
 }
-

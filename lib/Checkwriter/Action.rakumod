@@ -22,6 +22,7 @@ multi sub action(@args, :$debug) is export {
     my $afil;
     my $cfil;
 
+    @opts;
     # modes
     my $write  = 0;
     my $show   = 0;
@@ -124,21 +125,27 @@ sub help() {
         $usage
 
         Modes
-          b       - write a blank check with default dummy values
-          dr      - write a draft check (register will not be affected)
-          p       - write a check to a payee (register WILL be affected)
-          del     - delete a check from the register (sets its amount to zero
+          d        - write a 'draft' check (register will not be affected
+                      and the check will have a VOID overlay)
+          p        - write a check to a payee (register WILL be affected;
+                      you will have a chance to manually enter the amount
+                      in words in your native language)
+          d        - delete a check from the register (sets its amount to zero
                       and adds a dated note to the 'memo' record; offers to
                       add user comments)
-          s       - shows a list of the module's resources
+          s        - write a sample check with default dummy values (used to
+                      fine tune the check's appearance)
+          r        - shows a list of the module's resources
+          t        - shows the balance in the register
           do[=DIR] - downloads the module's resources to the current directory
                       in a 'resources' subdirectory or the DIR directory
         Options
-          a=A     - use the A file (in Hjson format) to define the user's bank account
-                      information (default: data/acctount.hjson)
-          c=C     - use the C file (in Hjson format) to define the user's check
+          -a=A     - use the A file (in Hjson format) to define the user's bank 
+                      account information (default: data/account.yml)
+          -c=C     - use the C file (in Hjson format) to define the user's check
                       information (default: data/check.hjson)
-          deb     - debug
+          -lang=XX - request use of language XX (NYI)
+          -d       - debug
 
         Note: If the 'user*' and 'payee*' files don't exist the default files are:
                 resources/example-payee.hjson

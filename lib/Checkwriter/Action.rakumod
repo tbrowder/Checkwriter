@@ -22,7 +22,7 @@ multi sub action(@args, :$debug) is export {
     my $afil;
     my $cfil;
 
-    @opts;
+    my @opts;
     # modes
     my $write  = 0;
     my $show   = 0;

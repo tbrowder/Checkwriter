@@ -4,7 +4,7 @@
 
 Using templates similar to the format of the check (*.chk) files
 of L<GnuCash|https://gnucash.org>, this module and its binary programs
-allows the user to print checks on standard sizes of paper.
+allow the user to print checks on standard sizes of paper.
 
 The default is to print a single check on Office Depot's single-check
 paper (US Letter size) using the provided check template file. The
@@ -25,6 +25,33 @@ information on banking standards and check specifications.
 use Checkwriter;
 checkwriter write-check [interactive process]
 =end code
+
+=head1 Installation requirements
+
+The following packages need to be installed to use this module:
+
+=begin item 
+The FontConfig library
+
+On Debian:
+
+=begin code
+$ sudo aptitude install fontconfig
+=end code
+
+=end item
+
+=begin item 
+The FreeFont font files
+
+On Debian:
+
+=begin code
+$ sudo aptitude install fonts-freefont-otf
+$ sudo aptitude install ???
+=end code
+
+=end item
 
 =DESCRIPTION
 

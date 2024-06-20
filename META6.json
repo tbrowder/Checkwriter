@@ -11,12 +11,12 @@
     "JSON::Class:auth<zef:jonathanstowe>",
     "JSON::Fast",
     "JSON::Hjson",
+    "Compress::PDF",
     "Lingua::EN::Numbers",
     "YAMLish",
     "PDF::Font::Loader",
     "PDF::Lite",
     "PDF::API6",
-    "FontFactory::Type1",
     "CSV::Table",
     "Text::Utils"
   ],

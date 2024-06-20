@@ -3,7 +3,7 @@
 Checkwriter
 ===========
 
-Using templates similar to the format of the check (*.chk) files of [GnuCash](https://gnucash.org), this module and its binary programs allows the user to print checks on standard sizes of paper.
+Using templates similar to the format of the check (*.chk) files of [GnuCash](https://gnucash.org), this module and its binary programs allow the user to print checks on standard sizes of paper.
 
 The default is to print a single check on Office Depot's single-check paper (US Letter size) using the provided check template file. The font used is the **E-13B, Common Machine Language font** in a free (for non-commercial use) implementation called the *MICR Encoding Font* provided by **[1001 Fonts](https://www.1001fonts.com/micr-encoding-font.html#styles)** with reasonable [terms of use](https://www.1001fonts.com/licenses/general-font-usage-terms.html). That font is the standard expected for the US and is also used in some other countries. See the [TECHNICAL](./TECHNICAL.md) file for more information on banking standards and check specifications.
 
@@ -15,6 +15,24 @@ SYNOPSIS
     %*ENV<CHECKWRITER_PRIVATE_DIR> = "/path/to/private/dir";
     use Checkwriter;
     checkwriter write-check [interactive process]
+
+Installation requirements
+=========================
+
+The following packages need to be installed to use this module:
+
+  * The FontConfig library
+
+    On Debian:
+
+        $ sudo aptitude install fontconfig
+
+  * The FreeFont font files
+
+    On Debian:
+
+        $ sudo aptitude install fonts-freefont-otf
+        $ sudo aptitude install ???
 
 DESCRIPTION
 ===========

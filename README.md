@@ -32,7 +32,6 @@ The following packages need to be installed to use this module:
     On Debian:
 
         $ sudo aptitude install fonts-freefont-otf
-        $ sudo aptitude install ???
 
 DESCRIPTION
 ===========

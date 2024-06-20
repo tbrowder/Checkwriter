@@ -48,7 +48,6 @@ On Debian:
 
 =begin code
 $ sudo aptitude install fonts-freefont-otf
-$ sudo aptitude install ???
 =end code
 
 =end item

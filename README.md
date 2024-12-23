@@ -7,9 +7,24 @@ Using templates similar to the format of the check (*.chk) files of [GnuCash](ht
 
 The default is to print a single check on Office Depot's single-check paper (US Letter size) using the provided check template file. The font used is the **E-13B, Common Machine Language font** in a free (for non-commercial use) implementation called the *MICR Encoding Font* provided by **[1001 Fonts](https://www.1001fonts.com/micr-encoding-font.html#styles)** with reasonable [terms of use](https://www.1001fonts.com/licenses/general-font-usage-terms.html).
 
-See the [FONT-LICENSES](./FONT-LICENSES.md) file for font licences for the fonts that are or may be used herein.
+**Important Note:** You will have to download your own copy and place it in your \$HOME directory in file '$HOME/.Checwriter/font-files.list' with an entry something like this (we assume your font file is named 'micre.ttf'):
+
+    # code  basename path
+      micr  MICR-font /path/to/micre.ttf
+
+That font is not the greatest, and I personally paid for a good copy for personal use on my desktop. I bought the font (Universal MICR Pi Medium) from [https:/myfonts.com](https:/myfonts.com) and it cost \$29.00 USD (plus applicable taxes). The download was a zip archive with contents:
+
+    invoice_6306472165546.pdf
+    Licenses
+    Licenses/2266
+    Licenses/2266/Monotype_Font_Software_End_User_License_Agreement.html
+    MICRStd.otf
+
+The actual font file name is 'MICRStd.otf'.
 
 That font is the standard expected for the US and is also used in some other countries. See the [TECHNICAL](./TECHNICAL.md) file for more information on banking standards and check specifications.
+
+See the [FONT-LICENSES](./FONT-LICENSES) directory for font licences for the fonts that are or may be used herein.
 
 SYNOPSIS
 ========
@@ -36,6 +51,19 @@ The following packages need to be installed to use this module:
     On Debian:
 
         $ sudo aptitude install fonts-freefont-otf
+
+You should also get some of Google's Noto fonts for better access to a larger set of glyph code points. Go to [Google fonts](https://fonts.google.com) and select 'Noto Serif', 'Noto Sans', and 'Noto Sans Mono'. Download the zip archives(s) onto your PC in some empty directory and unzip them. We currently have these 10 Noto fonts available (plus 175 other variants):
+
+<table class="pod-table">
+<thead><tr>
+<th>Font</th>
+</tr></thead>
+<tbody>
+<tr> <td>NotoSerif-Regular.ttf</td> </tr> <tr> <td>NotoSerif-Bold.ttf</td> </tr> <tr> <td>NotoSerif-Italic.ttf</td> </tr> <tr> <td>NotoSerif-BoldItalic.ttf</td> </tr> <tr> <td>NotoSans-Regular.ttf</td> </tr> <tr> <td>NotoSans-Bold.ttf</td> </tr> <tr> <td>NotoSans-Italic.ttf</td> </tr> <tr> <td>NotoSans-BoldItalic.ttf</td> </tr> <tr> <td>NotoSansMono-Regular.ttf</td> </tr> <tr> <td>NotoSansMono-Bold.ttf</td> </tr>
+</tbody>
+</table>
+
+Note the file names above are in the family and style order as the Free Fonts in our own '$HOME' directory.
 
 DESCRIPTION
 ===========

@@ -8,7 +8,9 @@
   "build-depends": [
   ],
   "depends": [
-    "FontFactory::Type1",
+    "Font::Utils",
+    "Bin::Utils",
+    "MacOS::NativeLib",
     "JSON::Class:auth<zef:jonathanstowe>",
     "JSON::Fast",
     "JSON::Hjson",

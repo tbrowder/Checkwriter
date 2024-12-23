@@ -5,7 +5,11 @@ Checkwriter
 
 Using templates similar to the format of the check (*.chk) files of [GnuCash](https://gnucash.org), this module and its binary programs allow the user to print checks on standard sizes of paper.
 
-The default is to print a single check on Office Depot's single-check paper (US Letter size) using the provided check template file. The font used is the **E-13B, Common Machine Language font** in a free (for non-commercial use) implementation called the *MICR Encoding Font* provided by **[1001 Fonts](https://www.1001fonts.com/micr-encoding-font.html#styles)** with reasonable [terms of use](https://www.1001fonts.com/licenses/general-font-usage-terms.html). That font is the standard expected for the US and is also used in some other countries. See the [TECHNICAL](./TECHNICAL.md) file for more information on banking standards and check specifications.
+The default is to print a single check on Office Depot's single-check paper (US Letter size) using the provided check template file. The font used is the **E-13B, Common Machine Language font** in a free (for non-commercial use) implementation called the *MICR Encoding Font* provided by **[1001 Fonts](https://www.1001fonts.com/micr-encoding-font.html#styles)** with reasonable [terms of use](https://www.1001fonts.com/licenses/general-font-usage-terms.html).
+
+See the [FONT-LICENSES](./FONT-LICENSES.md) file for font licences for the fonts that are or may be used herein.
+
+That font is the standard expected for the US and is also used in some other countries. See the [TECHNICAL](./TECHNICAL.md) file for more information on banking standards and check specifications.
 
 SYNOPSIS
 ========
@@ -42,7 +46,7 @@ The user's default personal or business bank account and other private informati
 
   * 'account.hjson'
 
-    Contains the bank account data. 
+    Contains the bank account data.
 
   * 'register.json'
 
@@ -52,7 +56,7 @@ The user's default personal or business bank account and other private informati
 
     Contains the data to define the physical layout of a printed check.
 
-The file names are **not** required to be the same but, in any case, they must be provided in the user's `$HOME/.Checkwriter/config.yml` which will be created if it doesn't exist and be populated with the example names. That default file looks like this:
+The file names are **not** required to be the same but, in any case, they must be provided in the user's `$HOME/.Checkwriter/config.yml` file (which will be created if it doesn't exist) and be populated with the example names. That default file looks like this:
 
     # file: $HOME/.Checkwriter/config.yml
     #   file names:
@@ -75,7 +79,7 @@ After customizing your account and check data as discussed above, you are ready 
 For non-US use
 --------------
 
-The author is happy to ensure everyone can use Checkwriter. 
+The author is happy to ensure everyone can use Checkwriter.
 
 Non-western languages can be accomodated, but it will take a while to determine your exact needs. It would be best to use personal email and one of the Raku IRC channels for coordination.
 
@@ -93,7 +97,7 @@ All dimensions should be given in PostScript points (72 per inch)
 
 To do so, interested parties will have to help in the following ways:
 
-  * Install the Freefonts on your system (Debian package 'free-fonts-otf'). 
+  * Install the Freefonts on your system (Debian package 'free-fonts-otf').
 
   * Provide the complete path to your desired font as installed on your system.
 
@@ -112,7 +116,7 @@ Planned features
 
   * Ability to use other fonts and currency symbols for other world regions
 
-If any person is interested in making this program more useful for non-US use, he or she can help by providing 
+If any person is interested in making this program more useful for non-US use, he or she can help by providing
 
 Contributing
 ------------

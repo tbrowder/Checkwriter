@@ -1,9 +1,10 @@
 unit module Checkwriter;
 
+use Bin::Utils;
+use Font::Utils;
 use Lingua::EN::Numbers;
 use JSON::Class:auth<zef:jonathanstowe>;
 use JSON::Hjson;
-use FontFactory::Type1;
 use PDF::API6;
 use PDF::Page;
 use PDF::Content::Page :PageSizes;

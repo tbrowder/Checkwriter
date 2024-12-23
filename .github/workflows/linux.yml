@@ -24,6 +24,6 @@ jobs:
           raku-version: ${{ matrix.raku-version }}
       - name: Install Dependencies
         run: |
-          zef install --/test --deps-only .
+          zef install --/test --deps-only . --exclude="Font::Utils"
       - name: Run Tests
         run: zef --debug install .

@@ -197,13 +197,18 @@ Then install (or reinstall) this package.
 
 =head2 Planned features
 
+=item Ability to use multiple checking accounts
+
+=head2 Other possible features (if there is user interest)
+
 =item Ability to print multiple checks in one batch
 =item Ability to use other standard check papers
-=item Ability to use multiple checking accounts
 =item Ability to use other fonts and currency symbols for other world regions
 
 If any person is interested in making this program more useful for
-non-US use, he or she can help by providing
+non-US use, he or she can help by (1) filing a feature request and (2)
+providing a Pull Request (PR) if possible.
+
 =head2 Contributing
 
 Interested users are encouraged to contribute improvements and
@@ -214,6 +219,6 @@ requests, and suggestions are always welcome.
 
 Artistic 2.0. See L<LICENSE|./LICENSE>.
 
-E<0x00A9> 2020-2024, Thomas M. Browder, Jr. <tbrowder@acm.org>
+E<0x00A9> 2020-2025, Thomas M. Browder, Jr. <tbrowder@acm.org>
 
 =end pod

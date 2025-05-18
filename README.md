@@ -136,15 +136,18 @@ To use the module for non-US countries, you can install the Freefont Serif, Sans
 Planned features
 ----------------
 
+  * Ability to use multiple checking accounts
+
+Other possible features (if there is user interest)
+---------------------------------------------------
+
   * Ability to print multiple checks in one batch
 
   * Ability to use other standard check papers
 
-  * Ability to use multiple checking accounts
-
   * Ability to use other fonts and currency symbols for other world regions
 
-If any person is interested in making this program more useful for non-US use, he or she can help by providing
+If any person is interested in making this program more useful for non-US use, he or she can help by (1) filing a feature request and (2) providing a Pull Request (PR) if possible.
 
 Contributing
 ------------
@@ -156,5 +159,5 @@ LICENSE and COPYRIGHT
 
 Artistic 2.0. See [LICENSE](./LICENSE).
 
-© 2020-2024, Thomas M. Browder, Jr. <tbrowder@acm.org>
+© 2020-2025, Thomas M. Browder, Jr. <tbrowder@acm.org>
 

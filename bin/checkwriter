@@ -4,7 +4,7 @@ use Checkwriter::Action;
 
 my $debug = 0;
 if not @*ARGS {
-   action;
+   help(:$debug);
 }
 else {
    action @*ARGS, :$debug;

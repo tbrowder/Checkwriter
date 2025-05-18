@@ -9,13 +9,7 @@ use Checkwriter;
 use Checkwriter::Resources;
 use Checkwriter::PayTo;
 
-my $usage = "Usage: {$*PROGRAM.basename} mode [options...][help]";
-
-multi sub action(:$debug) is export {
-    print $usage
-}
-
-multi sub action(@args, :$debug) is export {
+sub action(@args, :$debug) is export {
 
     my $resdir = $*CWD;
     # options
@@ -120,9 +114,9 @@ multi sub action(@args, :$debug) is export {
 }
 
 ### subroutines ###
-sub help() {
+sub help(:$debug) is export {
     print qq:to/HERE/;
-        $usage
+    Usage: {$*PROGRAM.basename} mode [options...][help]
 
         Modes
           d        - write a 'draft' check (register will not be affected

@@ -1,10 +1,7 @@
-=begin pod
-
 Google fonts are free to use. Most fonts, including the Noto fonts we
 use, are licensed under the B<OFL>. The text is availalable L<here|https://openfontlicense.org/documents/OFL.txt>
 and is shown here:
 
-=begin verbatim
 Copyright (c) <dates>, <Copyright Holder> (<URL|email>),
 with Reserved Font Name <Reserved Font Name>.
 Copyright (c) <dates>, <additional Copyright Holder> (<URL|email>),
@@ -14,7 +11,6 @@ Copyright (c) <dates>, <additional Copyright Holder> (<URL|email>).
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 https://openfontlicense.org
-
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
@@ -102,7 +98,3 @@ INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
 DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
-
-=end verbatim
-
-=end pod

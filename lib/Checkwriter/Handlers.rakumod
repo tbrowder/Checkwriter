@@ -3,7 +3,7 @@ unit module Checkwriter::Handlers;
 #=== exported subs ===
 # Receives a path to the user's register.json file
 # along with data for the desired actions:
-# 
+#
 # c - make a copy of the register
 # d - deposit
 # p - pay-to, write a check
@@ -12,19 +12,27 @@ unit module Checkwriter::Handlers;
 subset Transact of Str is export where * ~~ /^ :i [c|d|p|w|z]/;
 sub handle-register(Transact $action, :$path!, :$debug) is export {
     with $action {
-        when /c/ { 
+        when /c/ {
+            ; # ok, no-op
         }
-        when /d/ { 
+        when /d/ {
+            ; # ok, no-op
         }
-        when /p/ { 
+        when /p/ {
+            ; # ok, no-op
         }
-        when /w/ { 
+        when /w/ {
+            ; # ok, no-op
         }
-        when /z/ { 
+        when /z/ {
+            ; # ok, no-op
         }
         default {
-            die qq:to/HERE/;
+            say qq:to/HERE/;
+            FATAL: Unrecognized arg '$_'.
+                   Exiting...
             HERE
+            exit(1)
         }
     }
 }

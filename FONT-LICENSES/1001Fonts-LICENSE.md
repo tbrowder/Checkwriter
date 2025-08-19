@@ -1,7 +1,7 @@
 1001Fonts General Font Usage Terms
 ==================================
 
-(source: [https://www.1001fonts.com/licenses/general-font-usage-terms.html](https://www.1001fonts.com/licenses/general-font-usage-terms.html)
+(source: [https://www.1001fonts.com/licenses/general-font-usage-terms.html](https://www.1001fonts.com/licenses/general-font-usage-terms.html))
 
 Preamble
 --------
@@ -18,7 +18,11 @@ Personal Use
 
 All fonts may be downloaded and used free of charge for personal use, as long as the usage is not racist or illegal. Personal use refers to all usage that does not generate financial income in a business manner, for instance:
 
-- personal scrapbooking for yourself - recreational websites and blogs for friends and family - prints such as flyers, posters, t-shirts for churches, charities, and non-profit organizations
+- personal scrapbooking for yourself
+
+- recreational websites and blogs for friends and family
+
+- prints such as flyers, posters, t-shirts for churches, charities, and non-profit organizations
 
 Commercial Use
 --------------
@@ -28,7 +32,15 @@ For commercial use of a font, please check the font zip-file for a readme.txt, l
 Commercial use refers to usage in a business environment, including:
 --------------------------------------------------------------------
 
-- business cards, logos, advertising, websites for companies - t-shirts, books, apparel that will be sold for money - flyers, posters for events that charge admission - freelance graphic design work - anything that will generate direct or indirect income
+- business cards, logos, advertising, websites for companies
+
+- t-shirts, books, apparel that will be sold for money
+
+- flyers, posters for events that charge admission
+
+- freelance graphic design work
+
+- anything that will generate direct or indirect income
 
 Modification
 ------------

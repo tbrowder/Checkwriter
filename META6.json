@@ -1,32 +1,22 @@
 {
-  "api": "1",
-  "auth": "zef:tbrowder",
-  "author": "zef:tbrowder",
+  "auth": "zef:you",
   "authors": [
-    "Tom Browder <tbrowder@acm.org>"
+    "You"
+  ],
+  "bin": [
+    "bin/check-print",
+    "bin/check-from-csv"
   ],
   "build-depends": [
   ],
   "depends": [
-    "Font::Utils",
-    "Bin::Utils",
-    "MacOS::NativeLib",
-    "JSON::Class:auth<zef:jonathanstowe>",
-    "JSON::Fast",
-    "JSON::Hjson",
-    "Compress::PDF",
-    "Lingua::EN::Numbers",
-    "YAMLish",
-    "PDF::Font::Loader",
-    "PDF::Lite",
-    "PDF::API6",
-    "CSV::Table",
-    "Text::Utils"
+    "PDF::Class",
+    "PDF::Content"
   ],
-  "description": "Provides check writing capability.",
+  "description": "Generate personal checks as letter-size PDFs with MICR, overlays, DRAFT watermark, CSV batch printing, GNU FreeFont defaults, and private assets via CHECKPRINT_PRIV.",
   "license": "Artistic-2.0",
   "name": "Checkwriter",
-  "perl": "6.*",
+  "perl": "6.d",
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
@@ -38,24 +28,11 @@
     "Checkwriter::Vars": "lib/Checkwriter/Vars.rakumod"
   },
   "resources": [
-    "README",
-    "account.yml",
-    "check.hjson",
-    "register.json",
-    "config.yml",
-    "quicken.chk"
   ],
   "source-url": "https://github.com/tbrowder/Checkwriter.git",
-  "support": {
-    "bugtracker": "https://github.com/tbrowder/Checkwriter/issues"
-  },
   "tags": [
-    "check writer",
-    "PDF bank",
-    "finance"
   ],
   "test-depends": [
-    "Test::META"
   ],
-  "version": "0.0.1"
+  "version": "0.3.1"
 }

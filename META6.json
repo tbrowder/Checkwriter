@@ -1,38 +1,34 @@
 {
-  "auth": "zef:you",
+  "auth": "zef:tbrowder",
   "authors": [
-    "You"
-  ],
-  "bin": [
-    "bin/check-print",
-    "bin/check-from-csv"
+    "Thomas Browder"
   ],
   "build-depends": [
   ],
   "depends": [
-    "PDF::Class",
-    "PDF::Content"
+    "PDF::Lite",
+    "JSON::Fast"
   ],
-  "description": "Generate personal checks as letter-size PDFs with MICR, overlays, DRAFT watermark, CSV batch printing, GNU FreeFont defaults, and private assets via CHECKPRINT_PRIV.",
+  "description": "Mi6-managed personal-check templates (Fidelity & Hancock) with JSON-driven layout, watermark, overlays, and MICR baseline control.",
   "license": "Artistic-2.0",
-  "name": "Checkwriter",
-  "perl": "6.d",
+  "name": "Checkwriter::SampleCheck",
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
     "Checkwriter::PayTo": "lib/Checkwriter/PayTo.rakumod",
+    "Checkwriter::SampleCheck": "lib/Checkwriter/SampleCheck.rakumod",
     "Checkwriter::Template": "lib/Checkwriter/Template.rakumod",
     "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod",
     "Checkwriter::Vars": "lib/Checkwriter/Vars.rakumod"
   },
   "resources": [
   ],
-  "source-url": "https://github.com/tbrowder/Checkwriter.git",
+  "source-url": "https://github.com/tbrowder/Checkwriter-SampleCheck.git",
   "tags": [
   ],
   "test-depends": [
   ],
-  "version": "0.3.1"
+  "version": "0.3.0"
 }

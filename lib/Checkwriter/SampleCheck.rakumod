@@ -1,0 +1,174 @@
+unit module Checkwriter::SampleCheck;
+
+use JSON::Fast;
+use PDF::Lite;
+
+sub _pdf-y($page, $y) { $page.height - $y }
+
+sub _hline($page, :$x!, :$y!, :$w!, :$stroke = 0.5) {
+    $page.graphics: {
+        .line-width($stroke);
+        .move-to($x, _pdf-y($page, $y));
+        .line-to($x + $w, _pdf-y($page, $y));
+        .stroke;
+    }
+}
+
+sub _rect($page, :$x!, :$y!, :$w!, :$h!, :$stroke = 0.5) {
+    $page.graphics: {
+        .line-width($stroke);
+        .rectangle($x, _pdf-y($page, $y) - $h, $w, $h);
+        .stroke;
+    }
+}
+
+sub _text($page, Str $txt, :$x!, :$y!, :$font = 'Helvetica', :$size = 10) {
+    my $f = $page.get-font($font);
+    $page.text: {
+        .font($f, $size);
+        .move-text-position($x, _pdf-y($page, $y));
+        .show-text($txt);
+    }
+}
+
+sub load-layout(Str $path --> Hash:D) is export {
+    from-json $path.IO.slurp;
+}
+
+sub render-check(
+    Str :$outfile = "output/sample-check.pdf",
+    Hash :$layout!,
+    :%data = Hash[Str,Str].new(
+        addr1 => "JOHN G. AND SALLY D. JOHNSON",
+        addr2 => "123 MAIN STREET",
+        addr3 => "ANYTOWN, USA 99999",
+        check_number => "1001",
+        date => "____/____/______",
+        payee => "________________________________",
+        amount_num => "",
+        amount_words => "______________________________________________",
+        memo => "",
+        bank_info => "LOCAL BANK, ANYTOWN, USA",
+        micr_routing => "000000000",
+        micr_account => "000000000000",
+        micr_checkno => "1001"
+    ),
+) is export {
+
+    my $dir = $outfile.IO.dirname;
+    $dir.IO.mkdir unless $dir.IO.e;
+
+    my $pdf = PDF::Lite.new( :page-size([$layout<page><width>, $layout<page><height>]) );
+    my $page = $pdf.add-page;
+
+    my %p  = $layout<positions>;
+    my %f  = $layout<fonts>;
+    my %ln = $layout<lines> // {};
+    my %wm = $layout<watermark> // {};
+    my %ov = $layout<overlays>  // {};
+
+    # light background
+    $page.graphics: {
+        .fill-color(0.98, 0.99, 1.0);
+        .rectangle(0, 0, $page.width, $page.height);
+        .fill;
+    }
+
+    # watermark
+    if %wm && (%wm<text> // '').chars {
+        my $rad = +(%wm<angle> // 30) * pi / 180;
+        my $size = +(%wm<size> // (%f<watermark> // 22));
+        my $x = +(%wm<x> // 100);
+        my $y = +(%wm<y> // 110);
+        my $opacity = +(%wm<opacity> // 0.15);
+        my $wfont = $page.get-font('Helvetica-Bold');
+
+        $page.graphics: {
+            .save;
+            .fill-alpha($opacity);
+            .transform: :rotate($rad), :translate($x, _pdf-y($page, $y));
+        }
+        $page.text: {
+            .font($wfont, $size);
+            .move-text-position(0, 0);
+            .show-text(%wm<text>);
+        }
+        $page.graphics: { .restore; }
+    }
+
+    # address block
+    my $ax = %p<addr_block><x>;
+    my $ay = %p<addr_block><y>;
+    my $leading = %p<addr_block><leading> // 11;
+    for ($%data<addr1>, $%data<addr2>, $%data<addr3>).grep(*.so).kv -> $i, $line {
+        _text($page, $line, :x($ax), :y($ay + $i * $leading), :font('Helvetica'), :size(%f<info>));
+    }
+
+    # headings and lines
+    _text($page, $%data<check_number>, :x(%p<check_number><x>), :y(%p<check_number><y>), :font('Helvetica'), :size(%f<field>));
+    _text($page, "Date:", :x(%p<date_label><x>), :y(%p<date_label><y>), :font('Times-Roman'), :size(%f<label>));
+    _hline($page, :x(%p<date_line><x>), :y(%p<date_line><y>), :w(%p<date_line><w>), :stroke(%ln<stroke> // 0.5));
+
+    _text($page, "Pay to the Order of", :x(%p<payee_label><x>), :y(%p<payee_label><y>), :font('Times-Roman'), :size(%f<label>));
+    _hline($page, :x(%p<payee_line><x>), :y(%p<payee_line><y>), :w(%p<payee_line><w>), :stroke(%ln<stroke> // 0.5));
+
+    _rect($page, :x(%p<amount_box><x>), :y(%p<amount_box><y>), :w(%p<amount_box><w>), :h(%p<amount_box><h>), :stroke(%ln<stroke> // 0.5));
+
+    _hline($page, :x(%p<legal_line><x>), :y(%p<legal_line><y>), :w(%p<legal_line><w>), :stroke(%ln<stroke> // 0.5));
+    _text($page, "Dollars", :x(%p<dollars_word><x>), :y(%p<dollars_word><y>), :font('Times-Roman'), :size(%f<label>));
+
+    _text($page, $%data<bank_info>, :x(%p<bank_info><x>), :y(%p<bank_info><y>), :font('Helvetica'), :size(%f<info>));
+
+    _text($page, "For", :x(%p<memo_label><x>), :y(%p<memo_label><y>), :font('Times-Roman'), :size(%f<label>));
+    _hline($page, :x(%p<memo_line><x>), :y(%p<memo_line><y>), :w(%p<memo_line><w>), :stroke(%ln<stroke> // 0.5));
+    _hline($page, :x(%p<signature_line><x>), :y(%p<signature_line><y>), :w(%p<signature_line><w>), :stroke(%ln<stroke> // 0.5));
+
+    _text($page, $%data<payee>, :x(%p<payee_line><x> + 2), :y(%p<payee_line><y> - 2), :font('Helvetica'), :size(%f<field>));
+    _text($page, $%data<amount_num>, :x(%p<amount_box><x> + 4), :y(%p<amount_box><y> - 2), :font('Helvetica-Bold'), :size(%f<amount_box>));
+    _text($page, $%data<amount_words>, :x(%p<legal_line><x> + 2), :y(%p<legal_line><y> - 2), :font('Helvetica'), :size(%f<field>));
+    _text($page, $%data<memo>, :x(%p<memo_line><x> + 2), :y(%p<memo_line><y> - 2), :font('Helvetica'), :size(%f<field>));
+    _text($page, $%data<date>, :x(%p<date_line><x> + 2), :y(%p<date_line><y> - 2), :font('Helvetica'), :size(%f<field>));
+
+    # overlays: draw image if available, else a labeled guide box
+    for <logo signature> -> $k {
+        my %cfg = %ov{$k} // next;
+        next unless %cfg<enabled>;
+        my $path = %cfg<path> // "";
+        my $x = +(%cfg<x> // 0);
+        my $y = +(%cfg<y> // 0);
+        my $w = +(%cfg<w> // 40);
+        my $h = +(%cfg<h> // 20);
+
+        my $drawn = False;
+        if $path.chars and $path.IO.e {
+            try {
+                my $img = $page.image($path);
+                $page.graphics: {
+                    .save;
+                    .translate($x, _pdf-y($page, $y) - $h);
+                    .image($img, :$w, :$h);
+                    .restore;
+                }
+                $drawn = True;
+            }
+            CATCH { default { $drawn = False } }
+        }
+
+        if !$drawn {
+            _rect($page, :x($x), :y($y), :w($w), :h($h));
+            _text($page, uc($k) ~ " HERE", :x($x + 2), :y($y + $h - 4), :font('Helvetica'), :size(6));
+        }
+    }
+
+    # MICR placeholder (Courier). Adjust baseline with positions.micr.baseline_from_bottom
+    my $micr = ":{$%data<micr_routing>}:{$%data<micr_account>} {$%data<micr_checkno>}";
+    my $baseline = %p<micr><baseline_from_bottom> // 16;
+    my $cour = $page.get-font('Courier');
+    $page.text: {
+        .font($cour, %f<micr>);
+        .move-text-position(18, $baseline);
+        .show-text($micr);
+    }
+
+    $pdf.save-as($outfile);
+}

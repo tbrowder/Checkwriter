@@ -1,0 +1,115 @@
+{
+  "page": {
+    "width": 432,
+    "height": 198
+  },
+  "fonts": {
+    "info": 9,
+    "label": 8,
+    "field": 11,
+    "amount_box": 12,
+    "legal": 10,
+    "micr": 12,
+    "watermark": 24
+  },
+  "lines": {
+    "stroke": 0.5
+  },
+  "positions": {
+    "addr_block": {
+      "x": 22,
+      "y": 22,
+      "leading": 11
+    },
+    "check_number": {
+      "x": 392,
+      "y": 24
+    },
+    "date_label": {
+      "x": 310,
+      "y": 42
+    },
+    "date_line": {
+      "x": 340,
+      "y": 42,
+      "w": 70
+    },
+    "payee_label": {
+      "x": 72,
+      "y": 70
+    },
+    "payee_line": {
+      "x": 150,
+      "y": 70,
+      "w": 228
+    },
+    "amount_box": {
+      "x": 380,
+      "y": 68,
+      "w": 40,
+      "h": 16
+    },
+    "legal_line": {
+      "x": 22,
+      "y": 98,
+      "w": 362
+    },
+    "dollars_word": {
+      "x": 388,
+      "y": 98
+    },
+    "memo_label": {
+      "x": 22,
+      "y": 150
+    },
+    "memo_line": {
+      "x": 52,
+      "y": 150,
+      "w": 220
+    },
+    "signature_line": {
+      "x": 290,
+      "y": 150,
+      "w": 120
+    },
+    "bank_info": {
+      "x": 22,
+      "y": 130
+    },
+    "logo_box": {
+      "x": 22,
+      "y": 52,
+      "w": 40,
+      "h": 20
+    },
+    "micr": {
+      "baseline_from_bottom": 16
+    }
+  },
+  "watermark": {
+    "text": "FIDELITY INVESTMENTS",
+    "angle": 30,
+    "opacity": 0.15,
+    "size": 24,
+    "x": 100,
+    "y": 110
+  },
+  "overlays": {
+    "logo": {
+      "enabled": true,
+      "path": "assets/fidelity-logo.png",
+      "x": 22,
+      "y": 52,
+      "w": 40,
+      "h": 20
+    },
+    "signature": {
+      "enabled": false,
+      "path": "assets/signature.png",
+      "x": 290,
+      "y": 148,
+      "w": 120,
+      "h": 18
+    }
+  }
+}

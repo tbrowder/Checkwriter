@@ -1,37 +1,14 @@
-name: CI (Windows)
-on:
-  push: { branches: [ main, master ] }
-  pull_request: { branches: [ main, master ] }
-permissions: { contents: read }
-concurrency: { group: windows-${{ github.ref }}, cancel-in-progress: true }
+name: windows
+on: [push, pull_request]
 jobs:
-  windows:
+  test:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       - uses: Raku/setup-raku@v1
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~\AppData\Local\zef
-            ~\.raku
-          key: ${{ runner.os }}-zef-${{ hashFiles('META6.json') }}
-          restore-keys: ${{ runner.os }}-zef-
-      - shell: pwsh
-        run: |
-          raku -v
-          zef --version
-      - shell: pwsh
-        run: zef install --/test --deps-only .
-      - shell: pwsh
-        run: raku -e 'use lib "lib"; use Check::Print; say "Loaded: " ~ Check::Print.^name'
-      - shell: pwsh
-        env: { CHECKPRINT_PRIV: ${{ runner.temp }}\checkpriv }
-        run: |
-          New-Item -ItemType Directory -Force -Path "$env:CHECKPRINT_PRIV\fonts" | Out-Null
-          New-Item -ItemType Directory -Force -Path "$env:CHECKPRINT_PRIV\images" | Out-Null
-          New-Item -ItemType Directory -Force -Path "$env:CHECKPRINT_PRIV\registers" | Out-Null
-          raku -Ilib -e "use Check::Print :ALL; print-check-pdf(:path('sample-windows.pdf'), :payer-name('John G. and Sally D. Johnson'), :payer-address('1234 Oak Crest Drive · Fairview, NY 12345'), :bank-name('Local Bank'), :bank-address('Fairview, NY'), :payee('City Utilities'), :amount(1.23e0), :date('2025-08-20'), :memo('CI smoke'), :check-number(1003), :routing-number('123456789'), :account-number('000123456789'), :draft );"
-          dir sample-windows.pdf
-      - uses: actions/upload-artifact@v4
-        with: { name: sample-check-windows, path: sample-windows.pdf }
+      - name: Install deps
+        run: zef install --/test PDF::Lite JSON::Fast App::Mi6
+      - name: Build
+        run: mi6 build
+      - name: Tests
+        run: prove -e raku -vr t

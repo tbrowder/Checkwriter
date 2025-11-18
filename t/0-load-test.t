@@ -2,13 +2,13 @@ use Test;
 
 my @modules = [
    "Checkwriter",
-#   "Checkwriter::Handlers",
-#   "Checkwriter::Utils",
-#   "Checkwriter::PayTo",
-#   "Checkwriter::Action",
-#   "Checkwriter::Data",
-#   "Checkwriter::Vars",
-#   "Checkwriter::Template",
+   "Checkwriter::Handlers",
+   "Checkwriter::Utils",
+   "Checkwriter::PayTo",
+   "Checkwriter::Action",
+   "Checkwriter::Data",
+   "Checkwriter::Vars",
+   "Checkwriter::Template",
 ];
 
 plan @modules.elems;

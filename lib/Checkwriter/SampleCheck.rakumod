@@ -31,13 +31,18 @@ sub _text($page, Str $txt, :$x!, :$y!, :$font = 'Helvetica', :$size = 10) {
     }
 }
 
-sub load-layout(Str $path --> Hash:D) is export {
+sub load-layout(Str $path --> Hash:D) is export(:load-layout) {
     from-json $path.IO.slurp;
 }
 
 sub render-check(
-    Str :$outfile = "output/sample-check.pdf",
+    Str :$outfile!, # = "output/sample-check.pdf",
     Hash :$layout!,
+    #Hash[Str,Str]  :%data!,
+    #Hash :%data!,
+          :%data!,
+
+=begin comment
     :%data = Hash[Str,Str].new(
         addr1 => "JOHN G. AND SALLY D. JOHNSON",
         addr2 => "123 MAIN STREET",
@@ -53,12 +58,16 @@ sub render-check(
         micr_account => "000000000000",
         micr_checkno => "1001"
     ),
-) is export {
+=end comment
+) is export(:render-check) {
 
     my $dir = $outfile.IO.dirname;
     $dir.IO.mkdir unless $dir.IO.e;
 
-    my $pdf = PDF::Lite.new( :page-size([$layout<page><width>, $layout<page><height>]) );
+    my $w = $layout<page><width>;
+    my $h = $layout<page><height>;
+    my $pdf = PDF::Lite.new(:page-size($w, $h));
+
     my $page = $pdf.add-page;
 
     my %p  = $layout<positions>;
@@ -67,12 +76,15 @@ sub render-check(
     my %wm = $layout<watermark> // {};
     my %ov = $layout<overlays>  // {};
 
+=begin comment
+# TODO no such ops!!
     # light background
     $page.graphics: {
         .fill-color(0.98, 0.99, 1.0);
         .rectangle(0, 0, $page.width, $page.height);
         .fill;
     }
+=end comment
 
     # watermark
     if %wm && (%wm<text> // '').chars {

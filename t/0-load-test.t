@@ -10,6 +10,7 @@ my @modules = [
    "Checkwriter::Vars",
    "Checkwriter::Template",
    "Checkwriter::SampleCheck",
+   "Checkwriter::FontUtils",
 ];
 
 plan @modules.elems;

@@ -1,0 +1,25 @@
+unit module Checkwriter::FontUtils;
+
+use PDF::API6;
+use PDF::Page;
+use PDF::Font::Loader :load-font;
+use PDF::Content::FontObj;
+
+sub get-font(
+    PDF::API6:D $pdf,
+    Str :$core-font = "Times-Roman",
+    Str :$font-file,
+    PDF::Content::FontObj :$font-object,
+) {
+    if $font-object.defined {
+        return $font-object;
+    }
+
+    if $font-file.defined and
+        $font-file.IO.e {
+        return load-font(:file($font-file));
+    }
+
+    return $pdf.core-font($core-font);
+}
+

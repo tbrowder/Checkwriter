@@ -9,6 +9,8 @@ use Checkwriter;
 use Checkwriter::Resources;
 use Checkwriter::PayTo;
 
+#use Checkwriter::Help;
+
 sub action(@args, :$debug) is export {
 
     my $resdir = $*CWD;

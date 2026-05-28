@@ -1,7 +1,10 @@
 unit module Checkwriter::SampleCheck;
 
+use PDF::API6;
+use PDF::Page;
+use PDF::Font::Loader :load-font;
+use PDF::Content::FontObj;
 use JSON::Fast;
-use PDF::Lite;
 
 sub _pdf-y($page, $y) { $page.height - $y }
 
@@ -22,14 +25,21 @@ sub _rect($page, :$x!, :$y!, :$w!, :$h!, :$stroke = 0.5) {
     }
 }
 
-sub _text($page, Str $txt, :$x!, :$y!, :$font = 'Helvetica', :$size = 10) {
-    my $f = $page.get-font($font);
+sub _text($page, 
+    Str $txt, 
+    :$x!, :$y!, 
+    :$font = 'Helvetica', 
+    :$size = 10,
+) {
+    #my $f = $page.get-font($font);
+    my $f = $page.load-font($font);
     $page.text: {
         .font($f, $size);
         .move-text-position($x, _pdf-y($page, $y));
         .show-text($txt);
     }
 }
+
 
 sub load-layout(Str $path --> Hash:D) is export(:load-layout) {
     from-json $path.IO.slurp;
@@ -93,7 +103,9 @@ sub render-check(
         my $x = +(%wm<x> // 100);
         my $y = +(%wm<y> // 110);
         my $opacity = +(%wm<opacity> // 0.15);
-        my $wfont = $page.get-font('Helvetica-Bold');
+        #my $wfont = $page.get-font('Helvetica-Bold');
+        my $wfont = $page.load-font('Helvetica-Bold');
+        #my $wfont = load-font('Helvetica-Bold');
 
         $page.graphics: {
             .save;

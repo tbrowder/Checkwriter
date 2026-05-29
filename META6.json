@@ -11,7 +11,7 @@
   ],
   "description": "Mi6-managed personal-check templates (Fidelity & Hancock) with JSON-driven layout, watermark, overlays, and MICR baseline control.",
   "license": "Artistic-2.0",
-  "name": "Checkwriter::SampleCheck",
+  "name": "Checkwriter",
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",

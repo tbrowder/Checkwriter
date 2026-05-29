@@ -7,8 +7,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: Raku/setup-raku@v1
       - name: Install deps
-        run: zef install --/test PDF::Lite JSON::Fast App::Mi6
-      - name: Build (mi6 -> README.md)
-        run: mi6 build
+        run: zef install --/test PDF::Lite JSON::Fast
       - name: Tests
-        run: prove -e raku -vr t
+        run: zef install .

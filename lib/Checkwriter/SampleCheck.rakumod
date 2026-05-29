@@ -104,8 +104,8 @@ sub render-check(
         my $y = +(%wm<y> // 110);
         my $opacity = +(%wm<opacity> // 0.15);
         #my $wfont = $page.get-font('Helvetica-Bold');
-        my $wfont = $page.load-font('Helvetica-Bold');
-        #my $wfont = load-font('Helvetica-Bold');
+        #my $wfont = $page.load-font('Helvetica-Bold');
+        my $wfont = load-font(:file('Helvetica-Bold'));
 
         $page.graphics: {
             .save;

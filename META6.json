@@ -16,6 +16,7 @@
     "Checkwriter": "lib/Checkwriter.rakumod",
     "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
     "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
+    "Checkwriter::FontUtils": "lib/Checkwriter/FontUtils.rakumod",
     "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
     "Checkwriter::PayTo": "lib/Checkwriter/PayTo.rakumod",
     "Checkwriter::SampleCheck": "lib/Checkwriter/SampleCheck.rakumod",

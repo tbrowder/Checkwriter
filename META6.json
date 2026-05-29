@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "Bin::Utils",
     "PDF::Lite",
     "JSON::Fast"
   ],

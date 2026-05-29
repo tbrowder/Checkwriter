@@ -7,8 +7,21 @@
   ],
   "depends": [
     "Bin::Utils",
+    "Font::Utils",
+    "FontFactory::Type1",
+    "JSON::Class",
+    "JSON::Fast",
+    "JSON::Hjson",
+    "Lingua::EN::Numbers",
+    "PDF::API6",
+    "PDF::Content::Font::CoreFont",
+    "PDF::Content::FontObj",
+    "PDF::Content::Page",
+    "PDF::Font::Loader",
     "PDF::Lite",
-    "JSON::Fast"
+    "PDF::Page",
+    "Text::Utils",
+    "YAMLish"
   ],
   "description": "Mi6-managed personal-check templates (Fidelity & Hancock) with JSON-driven layout, watermark, overlays, and MICR baseline control.",
   "license": "Artistic-2.0",

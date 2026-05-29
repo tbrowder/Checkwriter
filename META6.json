@@ -7,7 +7,6 @@
   ],
   "depends": [
     "Bin::Utils",
-    "Font::Utils",
     "FontFactory::Type1",
     "JSON::Class",
     "JSON::Fast",

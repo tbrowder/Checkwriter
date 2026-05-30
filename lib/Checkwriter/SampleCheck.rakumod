@@ -12,7 +12,7 @@ sub _pdf-y($page, $y) { $page.height - $y }
 sub _hline($page, :$x!, :$y!, :$w!, :$stroke = 0.5) {
 #sub _hline($page, :$x!, :$y!, :$w!, :$lw = 0.5) {
     $page.graphics: {
-        .line-width = $stroke;
+        .line-width = $stroke; 
         #.line-width = $lw;
         .move-to($x, _pdf-y($page, $y));
         .line-to($x + $w, _pdf-y($page, $y));

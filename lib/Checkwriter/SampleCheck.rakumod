@@ -213,12 +213,11 @@ sub render-check(
     # MICR placeholder (Courier). Adjust baseline with positions.micr.baseline_from_bottom
     my $micr = ":{$%data<micr_routing>}:{$%data<micr_account>} {$%data<micr_checkno>}";
     my $baseline = %p<micr><baseline_from_bottom> // 16;
-    #my $cour = $page.get-font('Courier');
     my $cour = get-font $pdf, :core-font('Courier');
     $page.text: {
-        .font($cour, %f<micr>);
-        .move-text-position(18, $baseline);
-        .show-text($micr);
+        .font = $cour, %f<micr>;
+        .text-position = 18, $baseline;
+        .say: $micr;
     }
 
     $pdf.save-as($outfile);

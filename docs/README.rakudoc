@@ -16,7 +16,7 @@ reasonable L<terms of
 use|https://www.1001fonts.com/licenses/general-font-usage-terms.html>.
 
 B<Important Note:> You will have to download your own copy and place it
-in your \$HOME directory in file '$HOME/.Checwriter/font-files.list' with
+in your \$HOME directory in file '$HOME/.Checkwriter/font-files.list' with
 an entry something like this (we assume your font file is named 'micre.ttf'):
 
 =begin code

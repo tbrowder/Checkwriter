@@ -7,10 +7,10 @@ Using templates similar to the format of the check (*.chk) files of [GnuCash](ht
 
 The default is to print a single check on Office Depot's single-check paper (US Letter size) using the provided check template file. The font used is the **E-13B, Common Machine Language font** in a free (for non-commercial use) implementation called the *MICR Encoding Font* provided by **[1001 Fonts](https://www.1001fonts.com/micr-encoding-font.html#styles)** with reasonable [terms of use](https://www.1001fonts.com/licenses/general-font-usage-terms.html).
 
-**Important Note:** You will have to download your own copy and place it in your \$HOME directory in file '$HOME/.Checwriter/font-files.list' with an entry something like this (we assume your font file is named 'micre.ttf'):
+**Important Note:** You will have to download your own copy and place it in your \$HOME directory in file '$HOME/.Checkwriter/font-files.list' with an entry something like this (we assume your font file is named 'micre.ttf'):
 
-    # code  basename path
-      micr  MICR-font /path/to/micre.ttf
+    # code  path notes
+      micr  /path/to/micre.ttf MICR-font
 
 That font is not the greatest, and I personally paid for a good copy for personal use on my desktop. I bought the font (Universal MICR Pi Medium) from [https:/myfonts.com](https:/myfonts.com) and it cost \$29.00 USD (plus applicable taxes). The download was a zip archive with contents:
 

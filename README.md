@@ -159,5 +159,5 @@ LICENSE and COPYRIGHT
 
 Artistic 2.0. See [LICENSE](./LICENSE).
 
-© 2020-2025, Thomas M. Browder, Jr. <tbrowder@acm.org>
+© 2020-2026, Thomas M. Browder, Jr. <tbrowder@acm.org>
 

@@ -12,21 +12,23 @@ sub _pdf-y($page, $y) { $page.height - $y }
 sub _hline($page, :$x!, :$y!, :$w!, :$stroke = 0.5) {
 #sub _hline($page, :$x!, :$y!, :$w!, :$lw = 0.5) {
     $page.graphics: {
-        .line-width = $stroke; 
+        #.line-width = $stroke; 
+        .LineWidth = $stroke; 
         #.line-width = $lw;
-        .move-to($x, _pdf-y($page, $y));
-        .line-to($x + $w, _pdf-y($page, $y));
-        .stroke;
+        #.move-to($x, _pdf-y($page, $y)); .line-to($x + $w, _pdf-y($page, $y));
+        .MoveTo($x, _pdf-y($page, $y)); .LineTo($x + $w, _pdf-y($page, $y));
+        #.stroke;
+        .Stroke;
     }
 }
 
 sub _rect($page, :$x!, :$y!, :$w!, :$h!, :$stroke = 0.5) {
 #sub _rect($page, :$x!, :$y!, :$w!, :$h!, :$lw = 0.5) {
     $page.graphics: {
-        .line-width = $stroke;
+        .LineWidth = $stroke;
         #.line-width = $lw;
-        .rectangle($x, _pdf-y($page, $y) - $h, $w, $h);
-        .stroke;
+        .Rectangle($x, _pdf-y($page, $y) - $h, $w, $h);
+        .Stroke;
     }
 }
 
@@ -175,7 +177,7 @@ sub render-check(
     _text($pdf, $page, $%data<amount_num>, :x(%p<amount_box><x> + 4), :y(%p<amount_box><y> - 2), :core-font('Helvetica-Bold'), :size(%f<amount_box>));
     _text($pdf, $page, $%data<amount_words>, :x(%p<legal_line><x> + 2), :y(%p<legal_line><y> - 2), :core-font('Helvetica'), :size(%f<field>));
     _text($pdf, $page, $%data<memo>, :x(%p<memo_line><x> + 2), :y(%p<memo_line><y> - 2), :core-font('Helvetica'), :size(%f<field>));
-    _text($page, $%data<date>, :x(%p<date_line><x> + 2), :y(%p<date_line><y> - 2), :core-font('Helvetica'), :size(%f<field>));
+    _text($pdf, $page, $%data<date>, :x(%p<date_line><x> + 2), :y(%p<date_line><y> - 2), :core-font('Helvetica'), :size(%f<field>));
 
     # overlays: draw image if available, else a labeled guide box
     for <logo signature> -> $k {
@@ -212,7 +214,7 @@ sub render-check(
     my $micr = ":{$%data<micr_routing>}:{$%data<micr_account>} {$%data<micr_checkno>}";
     my $baseline = %p<micr><baseline_from_bottom> // 16;
     #my $cour = $page.get-font('Courier');
-    my $cour = get-font $pdf, 'Courier';
+    my $cour = get-font $pdf, :core-font('Courier');
     $page.text: {
         .font($cour, %f<micr>);
         .move-text-position(18, $baseline);

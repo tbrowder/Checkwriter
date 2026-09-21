@@ -5,7 +5,7 @@
     <mask id="hw-cutout">
       <rect width="144" height="144" fill="white"/>
       <!-- Approved stylized HW knockout. -->
-      <g fill="black">
+      <g fill="black"> <!-- g means group -->
 
         <!-- coordinate system: 0,0 is in top left, positive down and right (CCW) -->
         <!-- left diagonal with central triangular projection -->

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2in" height="2in" viewBox="0 0 144 144">
+  <defs>
+    <path id="top-arc" d="M 17,72 A 55,55 0 0 1 127,72"/>
+    <path id="bottom-arc" d="M 17,72 A 55,55 0 0 0 127,72"/>
+    <mask id="hw-cutout">
+      <rect width="144" height="144" fill="white"/>
+      <!-- Approved stylized HW knockout. -->
+      <g fill="black">
+
+        <!-- coordinate system: 0,0 is in top left, positive down and right (CCW) -->
+        <!-- left diagonal with central triangular projection -->
+        <!-- <path d="M45 48 L53 48 L76 96 L68 96 L58 75 L64 66 L56 66 Z"/> -->
+
+        <!-- first parallel diagonal -->
+        <path d="M45 48
+                 L53 48
+                 L76 96
+                 L68 96
+                 Z"/>
+
+        <!-- first triangular piece? -->
+        <path d="M58 75
+                 L64 66
+                 L56 66
+                 Z"/>
+
+        <!-- second parallel diagonal -->
+        <path d="M67 48
+                 L75 48
+                 L98 96
+                 L90 96
+                 Z"/>
+
+        <!-- detached triangular piece -->
+        <path d="M88  48
+                 L100 48
+                 L94  60
+                 Z"/>
+
+      </g>
+    </mask>
+  </defs>
+
+  <!-- Single pale-blue ink color. Change this one value to tune the overlay. -->
+  <g fill="#B9D7EA" stroke="#B9D7EA">
+    <circle cx="72" cy="72" r="71" fill="none" stroke-width="2"/>
+    <circle cx="72" cy="72" r="45" stroke="none" mask="url(#hw-cutout)"/>
+
+    <g stroke="none" font-family="Georgia, 'Times New Roman', serif"
+       font-size="14" letter-spacing="1.7" text-anchor="middle">
+      <text><textPath href="#top-arc" startOffset="50%">HANCOCK</textPath></text>
+      <text><textPath href="#bottom-arc" startOffset="50%">WHITNEY</textPath></text>
+    </g>
+  </g>
+</svg>

@@ -26,5 +26,5 @@ jobs:
         run: |
           brew install fontconfig
           zef install --/test --deps-only . 
-      - name: Run Tests
-        run: zef --debug install .
+      - name: Install 
+        run: zef install .

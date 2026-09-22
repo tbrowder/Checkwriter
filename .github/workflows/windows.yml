@@ -18,11 +18,11 @@ jobs:
           - 'latest'
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: Raku/setup-raku@v1
         with:
           raku-version: ${{ matrix.raku-version }}
       - name: Install Dependencies
-        run: zef install --/test --test-depends --deps-only . --exclude="Fon::Utils"
+        run: zef install --/test --test-depends --deps-only . --exclude="Font::Utils"
       - name: Run Tests
         run: zef --debug install .

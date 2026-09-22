@@ -6,6 +6,7 @@
     "Tom Browder <tbrowder@acm.org>"
   ],
   "build-depends": [
+     "LibraryMake"
   ],
   "depends": [
     "LibraryMake",

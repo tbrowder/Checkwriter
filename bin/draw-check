@@ -5,8 +5,6 @@ use v6.d;
 use lib "$*HOME/.checkwriter";
 
 use Checkwriter::Layout::HancockWhitney;
-#use Checkwriter::Layout::Fidelity;
-#use Checkwriter::Layout::CharlesSchwab;
 
 use JSON::Fast;
 use PDF::Lite;

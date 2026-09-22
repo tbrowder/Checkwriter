@@ -1,14 +1,15 @@
 use Test;
 
 my @modules = [
-   "Checkwriter",
-   "Checkwriter::Handlers",
-   "Checkwriter::Utils",
-   "Checkwriter::PayTo",
-   "Checkwriter::Action",
-   "Checkwriter::Data",
-   "Checkwriter::Vars",
-   "Checkwriter::Template",
+    "Checkwriter",
+    "Checkwriter::Layout",
+    "Checkwriter::MICR",
+    "Checkwriter::Layout",
+    "Checkwriter::Layout::Fidelity",
+    "Checkwriter::Layout::CharlesSchwab",
+    "Checkwriter::Layout::HancockWhitney",
+    "Checkwriter::Check",
+    "Checkwriter::Config",
 ];
 
 plan @modules.elems;

@@ -1,0 +1,605 @@
+#!/usr/bin/env raku
+
+use v6.d;
+
+use lib "$*HOME/.checkwriter";
+
+use Checkwriter::Layout::HancockWhitney;
+#use Checkwriter::Layout::Fidelity;
+#use Checkwriter::Layout::CharlesSchwab;
+
+use JSON::Fast;
+use PDF::Lite;
+use PDF::Font::Loader :load-font;
+use PDF::Content::FontObj;
+
+
+constant POINTS-PER-INCH = 72;
+
+constant PAGE-WIDTH  = 8.5 * POINTS-PER-INCH;
+constant PAGE-HEIGHT = 11  * POINTS-PER-INCH;
+
+constant MICR-TRANSIT = chr(0x2446);
+constant MICR-ON-US   = chr(0x2447);
+
+constant RIGHT-EDGE = 560;
+
+sub prompt(
+    Str $label,
+    Str :$default = '',
+    --> Str
+) {
+    if $default.chars {
+        print "$label [$default]: ";
+    }
+    else {
+        print "$label: ";
+    }
+
+    my Str $answer = $*IN.get // '';
+    $answer .= trim;
+
+    if $answer.chars {
+        return $answer;
+    }
+
+    $default;
+}
+
+
+sub integer-to-words(
+    Int $number,
+    --> Str
+) {
+    my @ones = <
+        zero one two three four five six seven eight nine
+        ten eleven twelve thirteen fourteen fifteen sixteen
+        seventeen eighteen nineteen
+    >;
+
+    my @tens = <
+        zero zero twenty thirty forty fifty sixty seventy
+        eighty ninety
+    >;
+
+    if $number < 20 {
+        return @ones[$number];
+    }
+
+    if $number < 100 {
+        my Int $tens = $number div 10;
+        my Int $ones = $number mod 10;
+
+        my Str $words = @tens[$tens];
+
+        if $ones {
+            $words ~= '-' ~ @ones[$ones];
+        }
+
+        return $words;
+    }
+
+    if $number < 1_000 {
+        my Int $hundreds = $number div 100;
+        my Int $remainder = $number mod 100;
+
+        my Str $words =
+            @ones[$hundreds] ~ ' hundred';
+
+        if $remainder {
+            $words ~= ' '
+                ~ integer-to-words($remainder);
+        }
+
+        return $words;
+    }
+
+    if $number < 1_000_000 {
+        my Int $thousands = $number div 1_000;
+        my Int $remainder = $number mod 1_000;
+
+        my Str $words =
+            integer-to-words($thousands)
+            ~ ' thousand';
+
+        if $remainder {
+            $words ~= ' '
+                ~ integer-to-words($remainder);
+        }
+
+        return $words;
+    }
+
+    if $number < 1_000_000_000 {
+        my Int $millions =
+            $number div 1_000_000;
+
+        my Int $remainder =
+            $number mod 1_000_000;
+
+        my Str $words =
+            integer-to-words($millions)
+            ~ ' million';
+
+        if $remainder {
+            $words ~= ' '
+                ~ integer-to-words($remainder);
+        }
+
+        return $words;
+    }
+
+    die "Amount is too large for this version of Checkwriter";
+}
+
+
+sub amount-to-words(
+    Str $amount,
+    --> Str
+) {
+    my Str $clean = $amount;
+    $clean .= subst(',', '', :g);
+    $clean .= subst('$', '', :g);
+    $clean .= trim;
+
+    die "Invalid amount '$amount'"
+        unless $clean ~~ /^ \d+ [ '.' \d ** 1..2 ]? $/;
+
+    my @parts = $clean.split('.');
+
+    my Int $dollars =
+        @parts[0].Int;
+
+    my Str $cents = '00';
+
+    if @parts.elems > 1 {
+        $cents = @parts[1];
+
+        if $cents.chars == 1 {
+            $cents ~= '0';
+        }
+    }
+
+    my Str $words =
+        integer-to-words($dollars);
+
+    $words.uc ~ " AND $cents/100";
+}
+
+sub formatted-amount(
+    Str $amount,
+    --> Str
+) {
+    my Str $clean = $amount;
+    $clean .= subst(',', '', :g);
+    $clean .= subst('$', '', :g);
+    $clean .= trim;
+
+    die "Invalid amount '$amount'"
+        unless $clean ~~ /^ \d+ [ '.' \d ** 1..2 ]? $/;
+
+    my @parts = $clean.split('.');
+
+    my Str $dollars = @parts[0];
+    my Str $cents = '00';
+
+    if @parts.elems > 1 {
+        $cents = @parts[1];
+
+        if $cents.chars == 1 {
+            $cents ~= '0';
+        }
+    }
+
+    my Str $grouped = '';
+
+    while $dollars.chars > 3 {
+        my Str $group =
+            $dollars.substr($dollars.chars - 3);
+
+        $dollars =
+            $dollars.substr(0, $dollars.chars - 3);
+
+        $grouped = ',' ~ $group ~ $grouped;
+    }
+
+    $grouped =
+        $dollars ~ $grouped;
+
+    '$' ~ $grouped ~ '.' ~ $cents;
+}
+
+sub draw-line(
+    $gfx,
+    Numeric $x1,
+    Numeric $y1,
+    Numeric $x2,
+    Numeric $y2,
+) {
+    $gfx.MoveTo($x1, $y1);
+    $gfx.LineTo($x2, $y2);
+    $gfx.Stroke;
+}
+
+#========================================
+# MAIN
+#========================================
+
+sub MAIN(
+    Str :$output =
+        "$*HOME/.checkwriter/hancock-whitney/checks/preview.pdf",
+) {
+
+    my Str $account-id = @*ARGS.shift // 'hancock-whitney';
+
+    $account-id .= lc;
+
+    given $account-id {
+        when 'h' | 'hancock-whitney' {
+            $account-id = 'hancock-whitney';
+        }
+
+        when 'f' | 'fidelity' {
+            $account-id = 'fidelity';
+        }
+
+        when 's' | 'c' |'charles-schwab' {
+            $account-id = 'charles-schwab';
+        }
+
+        default {
+            die "Unknown account '$account-id'";
+        }
+    }
+
+    my IO::Path $base-dir =
+        $*HOME.add('.checkwriter');
+
+    my IO::Path $account-dir =
+        $base-dir.add($account-id);
+
+    die "Unknown account '$account-id'"
+        unless $account-dir.d;
+
+    my IO::Path $account-file =
+        $account-dir.add('account.json');
+
+    die "Missing account file '$account-file'"
+        unless $account-file.f;
+
+    my IO::Path $font-file =
+        $base-dir.add('fonts').add('MICRStd.otf');
+
+    die "MICR font not found: $font-file"
+        unless $font-file.e;
+
+    my %account =
+        from-json($account-file.slurp);
+
+
+    #
+    # Transaction information.
+    #
+
+    my Str $number =
+        %account<next-check-number>.Str;
+
+    say "Check number: $number";
+
+    my Str $date =
+        prompt(
+            'Date:',
+            :default(Date.today.Str),
+        );
+
+    my Str $payee =
+        prompt('Pay to');
+
+    die 'Payee is required'
+        unless $payee.chars;
+
+    my Str $amount =
+        prompt('Amount');
+
+    die 'Amount is required'
+        unless $amount.chars;
+
+    my Str $memo =
+        prompt('Memo');
+
+    my Str $amount-words =
+        amount-to-words($amount);
+
+    my Str $numeric-amount =
+        formatted-amount($amount);
+
+
+    #
+    # Load MICR font.
+    #
+
+    my PDF::Content::FontObj $micr-font =
+        load-font :file($font-file.Str);
+
+
+    #
+    # Create PDF.
+    #
+
+    my PDF::Lite $pdf .= new;
+
+    $pdf.media-box = 'Letter';
+
+    my PDF::Lite::Page $page =
+        $pdf.add-page;
+
+    my $body-font =
+        $pdf.core-font(:family<Helvetica>);
+
+    my $bold-font =
+        $pdf.core-font(
+            :family<Helvetica>,
+            :weight<bold>,
+        );
+
+
+    #
+    # Account holder.
+    #
+
+    $page.text: -> $txt {
+        my ($x, $y) = |%LAYOUT<account-block>;
+        my Numeric $line-space = %LAYOUT<account-line-space>;
+
+        $txt.font = $bold-font, 11;
+
+        $txt.say(
+            %account<name>,
+            :position[$x, $y],
+        );
+
+        $y -= $line-space;
+
+        if %account<name2>:exists
+                and %account<name2>.Str.chars {
+            $txt.say(
+                %account<name2>,
+                :position[$x, $y],
+            );
+
+            $y -= $line-space;
+        }
+
+        $txt.font = $body-font, 9;
+
+        $txt.say(
+            %account<address>,
+            :position[$x, $y],
+        );
+
+        $y -= $line-space;
+
+        if %account<address2>:exists
+               and %account<address2>.Str.chars {
+            $txt.say(
+                %account<address2>,
+                :position[$x, $y],
+            );
+            $y -= $line-space;
+        }
+
+        $txt.say(
+            %account<city-state-zip>,
+            :position[$x, $y],
+        );
+
+#=======
+        #
+        # Bank identification.
+        #
+
+       # $txt.font = $bold-font, 9;
+        $txt.font = $body-font, 9;
+
+        $txt.say(
+            %account<bank-name>,
+            :position[36, 614],  # orig 36, 704
+        );
+
+        $txt.font = $body-font, 8;
+
+        $txt.say(
+            %account<bank-address>,
+            :position[36, 692],
+        );
+#=======
+
+        #
+        # Check number.
+        #
+
+        $txt.font = $bold-font, 11;
+
+        $txt.say(
+            $number,
+            :position(%LAYOUT<check-number>),
+            :align<right>,
+        );
+
+        #
+        # Date.
+        #
+
+        $txt.font = $body-font, 11; # orig 9 body font
+
+        $txt.say(
+            'Date:',
+            :position[465, 725],
+        );
+
+        $txt.font = $body-font, 11; # orig 9 body font
+        $txt.say(
+            $date,
+            :position(%LAYOUT<date>),
+            :align<right>,
+        );
+
+#=====
+        #
+        # Payee.
+        #
+
+        $txt.font = $body-font, 8;
+
+        $txt.say(
+            'PAY TO THE',
+            :position[36, 669],
+        );
+
+        $txt.say(
+            'ORDER OF',
+            :position[36, 659],
+        );
+
+        $txt.font = $body-font, 11;
+
+        $txt.say(
+            $payee,
+            :position[102, 660],
+        );
+
+
+        #
+        # Numeric amount.
+        #
+
+        $txt.font = $bold-font, 12;
+
+        $txt.say(
+            $numeric-amount,
+            :position(%LAYOUT<numeric-amount>),
+            :align<right>,
+        );
+
+
+        #
+        # Written amount.
+        #
+        # Use bold uppercase text followed by filler.
+        # We'll refine the filler length after seeing the print.
+        #
+
+        my Str $written-line =
+            $amount-words
+            ~ ' DOLLARS '
+            ~ ('*' x 18);
+
+        $txt.font = $bold-font, 11;
+
+        $txt.say(
+            $written-line,
+            :position[36, 629],
+        );
+#======
+
+        #
+        # Memo.
+        #
+
+        $txt.font = $body-font, 8;
+
+        $txt.say(
+            'MEMO',
+            :position[36, 589],
+        );
+
+        if $memo.chars {
+            $txt.font = $body-font, 9;
+
+            $txt.say(
+                $memo,
+                :position[75, 589],
+            );
+        }
+
+
+        #
+        # Signature label only for now.
+        #
+
+        $txt.font = $body-font, 8;
+
+        $txt.say(
+            'AUTHORIZED SIGNATURE',
+            :position[425, 574],
+        );
+    };
+
+    $page.graphics: -> $gfx {
+        # Payee
+        draw-line(
+                $gfx,
+                |%LAYOUT<payee-line>); # 98, 656, 475, 656);
+
+        # Written amount
+        draw-line(
+                $gfx,
+                |%LAYOUT<amount-line>); # 36, 624, 560, 624);
+
+        # Signature
+        draw-line(
+                $gfx,
+                |%LAYOUT<signature-line>); # 355, 585, 560, 585);
+    };
+
+
+    #
+    # MICR line.
+    #
+    # Hancock Whitney bank-issued format:
+    #
+    # TRANSIT routing TRANSIT  account ON-US   number
+    #
+
+    my Str $routing =
+        %account<routing>.Str;
+
+    my Str $account =
+        %account<account>.Str;
+
+    my Str $micr-line =
+        MICR-TRANSIT
+        ~ $routing
+        ~ MICR-TRANSIT
+        ~ '  '
+        ~ $account
+        ~ MICR-ON-US
+        ~ '   '
+        ~ $number;
+
+    $page.text: -> $txt {
+        $txt.font = $micr-font, 10; # <== according to micrfonts.com 12.5; # original was 11, use 12.5
+
+        $txt.say(
+            $micr-line,
+            :position[55, 561],
+        );
+    };
+
+
+    #
+    # Save PDF.
+    #
+
+    my IO::Path $output-file =
+        $output.IO;
+
+    $output-file.parent.mkdir
+        unless $output-file.parent.e;
+
+    $pdf.save-as($output-file.Str);
+
+    say();
+    say "Created: $output-file";
+    say "Check number $number has NOT been consumed.";
+}

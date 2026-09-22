@@ -40,12 +40,10 @@
     "Checkwriter::MICR": "lib/Checkwriter/MICR.rakumod"
   },
   "resources": [
-    "README",
-    "account.yml",
-    "check.hjson",
-    "register.json",
-    "config.yml",
-    "quicken.chk"
+    "fonts/release-notes.md",
+    "fonts/README",
+    "fonts/OFL.txt",
+    "fonts/Nimra-Regular.otf"
   ],
   "source-url": "https://github.com/tbrowder/Checkwriter.git",
   "support": {

@@ -25,6 +25,6 @@ jobs:
       - name: Install Dependencies
         run: |
           brew install fontconfig
-          zef install --/test --deps-only . --exclude="Font::Utils"
+          zef install --/test --deps-only . 
       - name: Run Tests
         run: zef --debug install .

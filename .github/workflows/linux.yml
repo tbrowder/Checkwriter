@@ -24,6 +24,7 @@ jobs:
           raku-version: ${{ matrix.raku-version }}
       - name: Install Dependencies
         run: |
+          sudo apt-get install libfontconfig1-dev -y
           zef install --/test --deps-only . --exclude="Font::Utils"
       - name: Run Tests
         run: zef --debug install .

@@ -6,10 +6,11 @@
     "Tom Browder <tbrowder@acm.org>"
   ],
   "build-depends": [
-     "LibraryMake"
   ],
   "depends": [
     "LibraryMake",
+    "FontConfig",
+    "Font::FreeType",
     "Font::Utils",
     "Bin::Utils",
     "MacOS::NativeLib",
@@ -31,13 +32,13 @@
   "perl": "6.*",
   "provides": {
     "Checkwriter": "lib/Checkwriter.rakumod",
-    "Checkwriter::Action": "lib/Checkwriter/Action.rakumod",
-    "Checkwriter::Data": "lib/Checkwriter/Data.rakumod",
-    "Checkwriter::Handlers": "lib/Checkwriter/Handlers.rakumod",
-    "Checkwriter::PayTo": "lib/Checkwriter/PayTo.rakumod",
-    "Checkwriter::Template": "lib/Checkwriter/Template.rakumod",
-    "Checkwriter::Utils": "lib/Checkwriter/Utils.rakumod",
-    "Checkwriter::Vars": "lib/Checkwriter/Vars.rakumod"
+    "Checkwriter::Check": "lib/Checkwriter/Check.rakumod",
+    "Checkwriter::Config": "lib/Checkwriter/Config.rakumod",
+    "Checkwriter::Layout": "lib/Checkwriter/Layout.rakumod",
+    "Checkwriter::Layout::CharlesSchwab": "lib/Checkwriter/Layout/CharlesSchwab.rakumod",
+    "Checkwriter::Layout::Fidelity": "lib/Checkwriter/Layout/Fidelity.rakumod",
+    "Checkwriter::Layout::HancockWhitney": "lib/Checkwriter/Layout/HancockWhitney.rakumod",
+    "Checkwriter::MICR": "lib/Checkwriter/MICR.rakumod"
   },
   "resources": [
     "README",

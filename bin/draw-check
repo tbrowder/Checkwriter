@@ -2,8 +2,6 @@
 
 use v6.d;
 
-use lib "$*HOME/.checkwriter";
-
 use Checkwriter::Layout::HancockWhitney;
 
 use JSON::Fast;
@@ -179,7 +177,8 @@ sub formatted-amount(
     my @parts = $clean.split('.');
 
     my Str $dollars = @parts[0];
-    my Str $cents = '00';
+    #my Str $cents = '00';
+    my Str $cents = 'NO';
 
     if @parts.elems > 1 {
         $cents = @parts[1];
@@ -224,8 +223,7 @@ sub draw-line(
 #========================================
 
 sub MAIN(
-    Str :$output =
-        "$*HOME/.checkwriter/hancock-whitney/checks/preview.pdf",
+    Str :$output = 'preview.pdf',
 ) {
 
     my Str $account-id = @*ARGS.shift // 'hancock-whitney';
@@ -250,42 +248,58 @@ sub MAIN(
         }
     }
 
-    my IO::Path $base-dir =
-        $*HOME.add('.checkwriter');
-
-    my IO::Path $account-dir =
-        $base-dir.add($account-id);
-
-    die "Unknown account '$account-id'"
-        unless $account-dir.d;
-
-    my IO::Path $account-file =
-        $account-dir.add('account.json');
-
-    die "Missing account file '$account-file'"
-        unless $account-file.f;
-
     #
-    # Load MICR font.
+    # Public demonstration data make the distribution usable without
+    # private files.  If CHECKWRITER_PRIVATE is defined, only the
+    # account-specific values are read from there.
     #
 
-    my IO::Path $font-file =
+    my %account = %(
+        name              => 'JOHN Q PUBLIC',
+        address           => '123 EXAMPLE STREET',
+        'city-state-zip'  => 'ANYTOWN, FL 00000',
+        routing           => '000000000',
+        account           => '0000000000',
+        'next-check-number' => '0000',
+        'bank-name'       => 'HANCOCK WHITNEY BANK',
+        'bank-address'    => 'hancockwhitney.com',
+    );
+
+    if %*ENV<CHECKWRITER_PRIVATE>:exists
+            and %*ENV<CHECKWRITER_PRIVATE>.chars {
+        my IO::Path $private-dir =
+            %*ENV<CHECKWRITER_PRIVATE>.IO;
+
+        my IO::Path $account-file =
+            $private-dir.add($account-id).add('account.json');
+
+        die "Missing private account file '$account-file'"
+            unless $account-file.f;
+
+        my %private-account =
+            from-json($account-file.slurp);
+
+        # Private values override the harmless public demonstration
+        # values.  Layout, bank artwork, and the default MICR font
+        # remain public resources.
+        for %private-account.kv -> $key, $value {
+            %account{$key} = $value;
+        }
+    }
+
+    my $font-resource =
         %?RESOURCES<fonts/Nimra-Regular.otf>;
 
-    die "MICR font not resource not found"
-        unless $font-file.defined;
+    die 'Public MICR font resource fonts/Nimra-Regular.otf not found'
+        unless $font-resource.defined;
 
-    my PDF::Content::FontObj $micr-font =
-        load-font :file($font-file.Str);
+    my IO::Path $font-file =
+        $font-resource.IO;
+
 
     #
     # Transaction information.
     #
-
-    my %account =
-        from-json($account-file.slurp);
-
-
 
     my Str $number =
         %account<next-check-number>.Str;
@@ -318,6 +332,15 @@ sub MAIN(
 
     my Str $numeric-amount =
         formatted-amount($amount);
+
+
+    #
+    # Load MICR font.
+    #
+
+    my PDF::Content::FontObj $micr-font =
+        load-font :file($font-file.Str);
+
 
     #
     # Create PDF.

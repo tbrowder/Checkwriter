@@ -1,6 +1,16 @@
-See environmenment variable
+Private account data are kept outside this distribution.
+
+Set the fixed environment variable
 
   CHECKWRITER_PRIVATE
 
-for the location of the user's private data including purchased fonts
-and account details.
+to the directory containing private account subdirectories, for example:
+
+  $CHECKWRITER_PRIVATE/hancock-whitney/account.json
+
+Private files should contain only account-specific data.  Bank layouts,
+logos, bank identification, and the default Nimra MICR font are public
+distribution resources.
+
+If CHECKWRITER_PRIVATE is unset, draw-check uses harmless demonstration
+values so the public distribution can generate a sample check by itself.

@@ -1,4 +1,4 @@
-unit module CheckWriter::Layout::HancockWhitney;
+unit module Checkwriter::Layout::HancockWhitney;
 
 our constant %LAYOUT is export = %(
     account-block      => [36, 757], # name

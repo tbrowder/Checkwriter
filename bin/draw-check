@@ -265,19 +265,27 @@ sub MAIN(
     die "Missing account file '$account-file'"
         unless $account-file.f;
 
-    my IO::Path $font-file =
-        $base-dir.add('fonts').add('MICRStd.otf');
+    #
+    # Load MICR font.
+    #
 
-    die "MICR font not found: $font-file"
-        unless $font-file.e;
+    my IO::Path $font-file =
+        %?RESOURCES<fonts/Nimra-Regular.otf>;
+
+    die "MICR font not resource not found"
+        unless $font-file.defined;
+
+    my PDF::Content::FontObj $micr-font =
+        load-font :file($font-file.Str);
+
+    #
+    # Transaction information.
+    #
 
     my %account =
         from-json($account-file.slurp);
 
 
-    #
-    # Transaction information.
-    #
 
     my Str $number =
         %account<next-check-number>.Str;
@@ -310,15 +318,6 @@ sub MAIN(
 
     my Str $numeric-amount =
         formatted-amount($amount);
-
-
-    #
-    # Load MICR font.
-    #
-
-    my PDF::Content::FontObj $micr-font =
-        load-font :file($font-file.Str);
-
 
     #
     # Create PDF.

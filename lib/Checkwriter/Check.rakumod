@@ -196,9 +196,9 @@ our sub create-check(
     Str:D :$date!,
     Str:D :$payee!,
     Str:D :$amount!,
-    Str :$memo = '',
-    Str :$debug-micr = False,
-    Str :$micr-font-label = '',
+    Str   :$memo = '',
+    Bool  :$debug-micr = False,
+    Str   :$micr-font-label = '',
     --> IO::Path
 ) is export {
     my Str $number = %account<next-check-number>.Str;

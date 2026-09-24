@@ -5,6 +5,9 @@
   "authors": [
     "Tom Browder <tbrowder@acm.org>"
   ],
+  "bin": [
+    "checkwriter"
+  ],
   "build-depends": [
   ],
   "depends": [
@@ -40,10 +43,10 @@
     "Checkwriter::MICR": "lib/Checkwriter/MICR.rakumod"
   },
   "resources": [
+    "fonts/Nimra-Regular.otf",
     "fonts/release-notes.md",
     "fonts/README",
-    "fonts/OFL.txt",
-    "fonts/Nimra-Regular.otf"
+    "fonts/OFL.txt"
   ],
   "source-url": "https://github.com/tbrowder/Checkwriter.git",
   "support": {

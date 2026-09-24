@@ -1,11 +1,120 @@
 #!/usr/bin/env raku
 
-use Checkwriter::Action;
+use v6.d;
 
-my $debug = 0;
-if not @*ARGS {
-   help(:$debug);
+use Checkwriter::Check;
+use Checkwriter::Config;
+use Checkwriter::Layout;
+
+sub prompt(
+    Str $label,
+    Str :$default = '',
+    --> Str
+) {
+    if $default.chars {
+        print "$label [$default]: ";
+    }
+    else {
+        print "$label: ";
+    }
+
+    my Str $answer = $*IN.get // '';
+    $answer .= trim;
+
+    if $answer.chars {
+        return $answer;
+    }
+
+    $default;
 }
-else {
-   action @*ARGS, :$debug;
+
+my Str $account = 'h';
+my Str $font-choice = 'public';
+my Str $output = 'preview.pdf';
+my Bool $output-seen = False;
+
+for @*ARGS -> $arg {
+    if $arg.starts-with('--account=') {
+        $account = $arg.substr('--account='.chars);
+    }
+    elsif $arg.starts-with('-a=') {
+        $account = $arg.substr('-a='.chars);
+    }
+    elsif $arg.starts-with('--micr-font=') {
+        $font-choice = $arg.substr('--micr-font='.chars).lc;
+    }
+    elsif $arg eq '--help' or $arg eq '-h' {
+        say 'Usage: checkwriter [-a=h|f|s] [--micr-font=public|private] [output.pdf]';
+        exit;
+    }
+    elsif $arg.starts-with('-') {
+        die "Unknown option '$arg'";
+    }
+    elsif not $output-seen {
+        $output = $arg;
+        $output-seen = True;
+    }
+    else {
+        die "Unexpected argument '$arg'";
+    }
 }
+
+my Str $account-id = canonical-account-id($account);
+my %account = load-account($account-id);
+my %layout = layout-for($account-id);
+
+my IO::Path $font-file;
+
+if $font-choice eq 'private' {
+    $font-file = private-micr-font();
+
+    die "Private MICR font not found: $font-file"
+        unless $font-file.f;
+}
+elsif $font-choice eq 'public' {
+
+    my $public-font = %?RESOURCES<fonts/Nimra-Regular.otf>;
+
+    unless $public-font.defined {
+        my IO::Path $repo-font =
+            $*PROGRAM.parent.parent
+            .add('resources')
+            .add('fonts')
+            .add('Nimra-Regular.otf);
+
+        $public-font = $repo-font
+                     if $repot-font.f;
+     }
+
+
+    die "Public MICR font 'fonts/Nimra-Regular.otf' not found"
+        unless $public-font.defined;
+}
+
+my Str $number = %account<next-check-number>.Str;
+say "Check number: $number";
+
+my Str $date = prompt('Date:', :default(Date.today.Str));
+my Str $payee = prompt('Pay to');
+die 'Payee is required' unless $payee.chars;
+
+my Str $amount = prompt('Amount');
+die 'Amount is required' unless $amount.chars;
+
+my Str $memo = prompt('Memo');
+
+my IO::Path $created = create-check(
+    %account,
+    %layout,
+    :$account-id,
+    :$output,
+    :micr-font-file($font-file),
+    :$date,
+    :$payee,
+    :$amount,
+    :$memo,
+);
+
+say();
+say "Created: $created";
+say "Check number $number has NOT been consumed.";

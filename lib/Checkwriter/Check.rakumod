@@ -150,6 +150,43 @@ sub draw-line(
     $gfx.Stroke;
 }
 
+sub masked-micr(
+    Str:D $line,
+    --> Str
+) {
+    my Str $masked = '';
+
+    for $line.comb -> $glyph {
+        given $glyph {
+            when MICR-TRANSIT {
+                $masked ~= 'T';
+            }
+
+            when MICR-ON-US {
+                $masked ~= 'O';
+            }
+
+            when MICR-AMOUNT {
+                $masked ~= 'A';
+            }
+
+            when MICR-DASH {
+                $masked ~= 'D';
+            }
+
+            when /\d/ {
+                $masked ~= '#';
+            }
+
+            default {
+                $masked ~= $glyph;
+            }
+        }
+    }
+
+    $masked;
+}
+
 our sub create-check(
     %account,
     %layout,
@@ -160,6 +197,8 @@ our sub create-check(
     Str:D :$payee!,
     Str:D :$amount!,
     Str :$memo = '',
+    Str :$debug-micr = False,
+    Str :$micr-font-label = '',
     --> IO::Path
 ) is export {
     my Str $number = %account<next-check-number>.Str;
@@ -295,9 +334,62 @@ our sub create-check(
         }
     };
 
+    if $debug-micr {
+        constant DEBUG-X     = 36;
+        constant DEBUG-Y     = 360;
+        constant DEBUG-RIGHT = 468;
+
+        my Int $glyph-count = $line.chars;
+        my Numeric $chunk-width =
+            $glyph-count * MICR-PITCH;
+
+        my Str $pattern = masked-micr($line);
+
+        $page.graphics: -> $gfx {
+            draw-line(
+                $gfx,
+                DEBUG-X,
+                DEBUG-Y,
+                DEBUG-RIGHT,
+                DEBUG-Y,
+            );
+        };
+
+        my @debug-lines = (
+            'MICR DEBUG INFORMATION',
+            "Font:          $micr-font-label",
+            "Font file:     {$micr-font-file.basename}",
+            "Generated:     {DateTime.now}",
+            "Font size:     {MICR-FONT-SIZE} pt",
+            "Glyph pitch:   {MICR-PITCH} pt",
+            "MICR X/Y:      $micr-x / $micr-y pt",
+            "Glyph count:   $glyph-count",
+            "Chunk width:   {$chunk-width.fmt('%.2f')} pt",
+            "Chunk height:  {MICR-FONT-SIZE} pt (nominal)",
+            "Pattern:       $pattern",
+            "Account:       $account-id",
+            "Check number:  $number",
+        );
+
+        $page.text: -> $txt {
+            $txt.font = $body-font, 8;
+
+            my Numeric $y = DEBUG-Y - 14;
+
+            for @debug-lines -> $debug-line {
+                $txt.say(
+                    $debug-line,
+                    :position[DEBUG-X, $y],
+                );
+
+                $y -= 11;
+            }
+        };
+    }
+
     my IO::Path $output-file = $output.IO;
     $output-file.parent.mkdir unless $output-file.parent.e;
     $pdf.save-as($output-file.Str);
 
-    $output-file;
+    $output-file = $output-file.IO;
 }

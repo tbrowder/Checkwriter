@@ -28,9 +28,9 @@ sub prompt(
     $default;
 }
 
-my Str $account = 'h';
-my Str $font-choice = 'public';
-my Str $output = 'preview.pdf';
+my Str $account      = 'h';
+my Str $font-choice  = 'public';
+my Str $output       = 'preview.pdf';
 my Bool $output-seen = False;
 
 for @*ARGS -> $arg {
@@ -60,8 +60,8 @@ for @*ARGS -> $arg {
 }
 
 my Str $account-id = canonical-account-id($account);
-my %account = load-account($account-id);
-my %layout = layout-for($account-id);
+my %account        = load-account($account-id);
+my %layout         = layout-for($account-id);
 
 my IO::Path $font-file;
 
@@ -80,15 +80,16 @@ elsif $font-choice eq 'public' {
             $*PROGRAM.parent.parent
             .add('resources')
             .add('fonts')
-            .add('Nimra-Regular.otf);
+            .add('Nimra-Regular.otf');
 
         $public-font = $repo-font
-                     if $repot-font.f;
+                     if $repo-font.f;
      }
-
 
     die "Public MICR font 'fonts/Nimra-Regular.otf' not found"
         unless $public-font.defined;
+
+    $font-file = $public-font.IO;
 }
 
 my Str $number = %account<next-check-number>.Str;

@@ -1,5 +1,7 @@
 #!/usr/bin/env raku
 
+use Test;
+
 use lib 'lib';
 
 use Checkwriter::Check;
@@ -74,3 +76,5 @@ say();
 say 'MICR debug checks generated:';
 say "    $public-output";
 say "    $private-output";
+
+done-testing;

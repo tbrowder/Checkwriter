@@ -178,7 +178,7 @@ sub formatted-amount(
 
     my Str $dollars = @parts[0];
     #my Str $cents = '00';
-    my Str $cents = 'NO';
+    my Str $cents = '00';
 
     if @parts.elems > 1 {
         $cents = @parts[1];

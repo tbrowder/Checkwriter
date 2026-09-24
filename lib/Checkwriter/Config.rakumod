@@ -1,1 +1,1 @@
-unit module Checkmaker::Config;
+unit module Checkwriter::Config;

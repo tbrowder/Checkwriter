@@ -31,7 +31,7 @@ SYNOPSIS
 
 
 
-    %*ENV<CHECKWRITER_PRIVATE_DIR> = "/path/to/private/dir";
+    %*ENV<CHECKWRITER_PRIVATE> = "/path/to/private/dir";
     use Checkwriter;
     checkwriter write-check [interactive process]
 

@@ -4,7 +4,6 @@ my @modules = [
     "Checkwriter",
     "Checkwriter::Layout",
     "Checkwriter::MICR",
-    "Checkwriter::Layout",
     "Checkwriter::Layout::Fidelity",
     "Checkwriter::Layout::CharlesSchwab",
     "Checkwriter::Layout::HancockWhitney",

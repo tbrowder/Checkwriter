@@ -187,6 +187,25 @@ sub masked-micr(
     $masked;
 }
 
+sub show-glyph(
+    $font,
+    Str:D $character,
+) {
+    my Str $encoded = $font.encode($character);
+
+    die "Unexpected encoding for '$character'"
+        unless $encoded.chars == 1;
+
+    my Int $index = $encoded.ord;
+    my $glyph = $font.glyph($index);
+
+    say "Character '$character' U+{$character.ord.fmt('%04X')}:";
+    say "    encoded       = {$index.fmt('%3d')}";
+    say "    glyph         = {$glyph.raku}";
+    say "    glyph-width   = {$font.glyph-width($character)}";
+    say "    stringwidth   = {$font.stringwidth($character)}";
+}
+
 our sub create-check(
     %account,
     %layout,
@@ -207,6 +226,7 @@ our sub create-check(
 
     my PDF::Content::FontObj $micr-font =
         load-font :file($micr-font-file.Str);
+
 
     my PDF::Lite $pdf .= new;
     $pdf.media-box = 'Letter';
@@ -371,6 +391,7 @@ our sub create-check(
             "Check number:  $number",
         );
 
+
         $page.text: -> $txt {
             $txt.font = $body-font, 8;
 
@@ -385,6 +406,39 @@ our sub create-check(
                 $y -= 11;
             }
         };
+
+        # is this the right place?
+        $page.graphics: -> $gfx {
+            #
+            # MICR baseline.
+            #
+            draw-line(
+                $gfx,
+                $micr-x,
+                $micr-y,
+                $micr-x + $chunk-width,
+                $micr-y,
+            );
+
+            #
+            # Fixed 9-point MICR cell boundaries.
+            #
+            my Numeric $x = $micr-x;
+
+            for 0 .. $glyph-count -> $cell {
+                draw-line(
+                    $gfx,
+                    $x,
+                    $micr-y - 3,
+                    $x,
+                    $micr-y + MICR-FONT-SIZE + 3,
+                );
+
+                $x += MICR-PITCH;
+            }
+        };
+
+
     }
 
     my IO::Path $output-file = $output.IO;

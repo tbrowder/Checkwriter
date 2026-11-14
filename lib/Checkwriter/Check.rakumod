@@ -448,13 +448,13 @@ sub create-check(
         #
         # Diagnostic MICR specimen below the check.
         #
-        constant SPECIMEN-X = 36;
+        my Numeric $specimen-x = $micr-x;
         constant SPECIMEN-Y = 380;
 
         $page.text: -> $txt {
             $txt.font = $micr-font, MICR-FONT-SIZE;
 
-            my Numeric $x = SPECIMEN-X;
+            my Numeric $x = $specimen-x;;
 
             for $render-line.comb -> $glyph {
                 if $glyph ne ' ' {
@@ -474,9 +474,9 @@ sub create-check(
             #
             draw-line(
                 $gfx,
-                SPECIMEN-X,
+                $specimen-x,
                 SPECIMEN-Y,
-                SPECIMEN-X + $chunk-width,
+                $specimen-x + $chunk-width,
                 SPECIMEN-Y,
                 :hairline,
             );
@@ -484,7 +484,7 @@ sub create-check(
             #
             # Fixed 9-point character-cell boundaries.
             #
-            my Numeric $x = SPECIMEN-X;
+            my Numeric $x = $specimen-x;
 
             for 0 .. $glyph-count -> $cell {
                 draw-line(

@@ -383,7 +383,7 @@ sub create-check(
 
         my Numeric $x = $micr-x;
 
-        for $line.comb -> $glyph {
+        for $render-line.comb -> $glyph {
             if $glyph ne ' ' {
                 $txt.say($glyph, :position[$x, $micr-y]);
             }
@@ -445,32 +445,54 @@ sub create-check(
             }
         };
 
-        # is this the right place?
+        #
+        # Diagnostic MICR specimen below the check.
+        #
+        constant SPECIMEN-X = 36;
+        constant SPECIMEN-Y = 380;
+
+        $page.text: -> $txt {
+            $txt.font = $micr-font, MICR-FONT-SIZE;
+
+            my Numeric $x = SPECIMEN-X;
+
+            for $render-line.comb -> $glyph {
+                if $glyph ne ' ' {
+                    $txt.say(
+                        $glyph,
+                        :position[$x, SPECIMEN-Y],
+                    );
+                }
+
+                $x += MICR-PITCH;
+            }
+        };
+
         $page.graphics: -> $gfx {
             #
-            # MICR baseline.
+            # Specimen baseline.
             #
             draw-line(
                 $gfx,
-                $micr-x,
-                $micr-y,
-                $micr-x + $chunk-width,
-                $micr-y,
+                SPECIMEN-X,
+                SPECIMEN-Y,
+                SPECIMEN-X + $chunk-width,
+                SPECIMEN-Y,
                 :hairline,
             );
 
             #
-            # Fixed 9-point MICR cell boundaries.
+            # Fixed 9-point character-cell boundaries.
             #
-            my Numeric $x = $micr-x;
+            my Numeric $x = SPECIMEN-X;
 
             for 0 .. $glyph-count -> $cell {
                 draw-line(
                     $gfx,
                     $x,
-                    $micr-y - 3,
+                    SPECIMEN-Y - 3,
                     $x,
-                    $micr-y + MICR-FONT-SIZE + 3,
+                    SPECIMEN-Y + MICR-FONT-SIZE + 3,
                     :hairline,
                 );
 

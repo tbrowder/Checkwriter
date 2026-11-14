@@ -2,7 +2,7 @@ unit module Checkwriter::Config;
 
 use JSON::Fast;
 
-our sub canonical-account-id(
+sub canonical-account-id(
     Str $id is copy,
     --> Str
 ) is export {
@@ -27,7 +27,7 @@ our sub canonical-account-id(
     }
 }
 
-our sub private-root(--> IO::Path) is export {
+sub private-root(--> IO::Path) is export {
     if %*ENV<CHECKWRITER_PRIVATE>:exists
             and %*ENV<CHECKWRITER_PRIVATE>.chars {
         return %*ENV<CHECKWRITER_PRIVATE>.IO;
@@ -36,14 +36,14 @@ our sub private-root(--> IO::Path) is export {
     $*HOME.add('.checkwriter');
 }
 
-our sub account-dir(
+sub account-dir(
     Str $account-id,
     --> IO::Path
 ) is export {
     private-root().add('accounts').add($account-id);
 }
 
-our sub load-account(
+sub load-account(
     Str $account-id,
     --> Hash
 ) is export {
@@ -56,6 +56,6 @@ our sub load-account(
     from-json($file.slurp).Hash;
 }
 
-our sub private-micr-font(--> IO::Path) is export {
+sub private-micr-font(--> IO::Path) is export {
     private-root().add('fonts').add('MICRStd.otf');
 }

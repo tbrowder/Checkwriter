@@ -9,7 +9,7 @@ use Checkwriter::MICR;
 sub integer-to-words(
     Int $number,
     --> Str
-) {
+) is export {
     my @ones = <
         zero one two three four five six seven eight nine
         ten eleven twelve thirteen fourteen fifteen sixteen
@@ -76,7 +76,7 @@ sub integer-to-words(
     die 'Amount is too large for this version of Checkwriter';
 }
 
-our sub amount-to-words(
+sub amount-to-words(
     Str $amount,
     --> Str
 ) is export {
@@ -90,20 +90,26 @@ our sub amount-to-words(
 
     my @parts = $clean.split('.');
     my Int $dollars = @parts[0].Int;
-    my Str $cents = '00';
+    my Int $cents = 0;
 
     if @parts.elems > 1 {
-        $cents = @parts[1];
+        my Str $cent-part = @parts[1];
 
-        if $cents.chars == 1 {
-            $cents ~= '0';
+        if $cent-part.chars == 1 {
+            $cent-part ~= '0';
         }
+
+        $cents = $cent-part.Int;
     }
 
-    integer-to-words($dollars).uc ~ " AND $cents/100";
+    my Str $fraction = $cents == 0
+        ?? 'NO/100'
+        !! "$cents/100";
+
+    return integer-to-words($dollars).uc ~ " and $fraction";
 }
 
-our sub formatted-amount(
+sub formatted-amount(
     Str $amount,
     --> Str
 ) is export {
@@ -144,16 +150,26 @@ sub draw-line(
     Numeric $y1,
     Numeric $x2,
     Numeric $y2,
-) {
+    Bool :$hairline = False,
+) is export {
+    if $hairline {
+        $gfx.SetLineWidth(0);
+    }
+
     $gfx.MoveTo($x1, $y1);
     $gfx.LineTo($x2, $y2);
     $gfx.Stroke;
+
+    if $hairline {
+        $gfx.SetLineWidth(1);
+    }
+
 }
 
 sub masked-micr(
     Str:D $line,
     --> Str
-) {
+) is export {
     my Str $masked = '';
 
     for $line.comb -> $glyph {
@@ -190,7 +206,7 @@ sub masked-micr(
 sub show-glyph(
     $font,
     Str:D $character,
-) {
+) is export {
     my Str $encoded = $font.encode($character);
 
     die "Unexpected encoding for '$character'"
@@ -206,7 +222,7 @@ sub show-glyph(
     say "    stringwidth   = {$font.stringwidth($character)}";
 }
 
-our sub create-check(
+sub create-check(
     %account,
     %layout,
     Str:D :$account-id!,
@@ -217,6 +233,7 @@ our sub create-check(
     Str:D :$amount!,
     Str   :$memo = '',
     Bool  :$debug-micr = False,
+    Bool  :$test-mode = False,
     Str   :$micr-font-label = '',
     --> IO::Path
 ) is export {
@@ -234,6 +251,22 @@ our sub create-check(
     my PDF::Lite::Page $page = $pdf.add-page;
     my $body-font = $pdf.core-font(:family<Helvetica>);
     my $bold-font = $pdf.core-font(:family<Helvetica>, :weight<bold>);
+
+    if $test-mode {
+        $page.text: -> $txt {
+            $txt.font = $bold-font, 48;
+            $txt.say(
+                'VOID',
+                :position[225, 650],
+            );
+
+            $txt.font = $bold-font, 10;
+            $txt.say(
+                'Sample check - not negotiable',
+                :position[205, 625],
+            );
+        };
+    }
 
     $page.text: -> $txt {
         my ($x, $y) = |%layout<account-block>;
@@ -338,6 +371,11 @@ our sub create-check(
         $number,
     );
 
+    my Str $render-line =
+        $micr-font-file.basename eq 'GnuMICR.ttf'
+            ?? encode-gnumicr($line)
+            !! $line;
+
     my ($micr-x, $micr-y) = |%layout<micr>;
 
     $page.text: -> $txt {
@@ -418,6 +456,7 @@ our sub create-check(
                 $micr-y,
                 $micr-x + $chunk-width,
                 $micr-y,
+                :hairline,
             );
 
             #
@@ -432,12 +471,12 @@ our sub create-check(
                     $micr-y - 3,
                     $x,
                     $micr-y + MICR-FONT-SIZE + 3,
+                    :hairline,
                 );
 
                 $x += MICR-PITCH;
             }
         };
-
 
     }
 

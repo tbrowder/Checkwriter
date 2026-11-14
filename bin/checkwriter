@@ -6,6 +6,39 @@ use Checkwriter::Check;
 use Checkwriter::Config;
 use Checkwriter::Layout;
 
+=begin comment
+my Bool $debug =
+   (%*ENV<CHECKWRITER_DEBUG> // 'False').lc eq any('true', '1');
+
+my Bool $debug-micr =
+   (%*ENV<CHECKWRITER_DEBUG_MICR> // 'False').lc eq any('true', '1');
+
+my Bool $test-mode =
+   (%*ENV<CHECKWRITER_TEST> // 'False').lc eq any('true', '1');
+=end comment
+
+my Str $debug-value =
+    (%*ENV<CHECKWRITER_DEBUG> // 'false').lc;
+
+my Str $debug-micr-value =
+    (%*ENV<CHECKWRITER_DEBUG_MICR> // 'false').lc;
+
+my Str $test-mode-value =
+    (%*ENV<CHECKWRITER_TEST> // 'false').lc;
+
+my Bool $debug =
+    $debug-value eq 'true' or ($debug-value eq '1');
+
+my Bool $debug-micr =
+    $debug-micr-value eq 'true'
+    or ($debug-micr-value eq '1')
+    or ($debug);
+
+my Bool $test-mode =
+    $test-mode-value eq 'true'
+    or ($test-mode-value eq '1');
+
+
 sub prompt(
     Str $label,
     Str :$default = '',
@@ -114,6 +147,8 @@ my IO::Path $created = create-check(
     :$payee,
     :$amount,
     :$memo,
+    :$test-mode,
+    :debug-micr($debug-micr or $test-mode),
 );
 
 say();

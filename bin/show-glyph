@@ -1,0 +1,28 @@
+#!/usr/bin/env raku
+
+use JSON::Fast;
+use PDF::Lite;
+use PDF::Font::Loader :load-font;
+use PDF::Content::FontObj;
+
+use Checkwriter;
+use Checkwriter::Check;
+use Checkwriter::Layout::HancockWhitney;
+use Checkwriter::MICR;
+
+if not @*ARGS {
+    print qq:to/HERE/;
+    Usage: {$*PROGRAM.basename} font glyph
+    HERE
+    exit;
+}
+
+my $font-name = load-file :file<>;@*ARGS.shift;
+
+
+my $glyph     = @*ARGS.shift;
+
+my $font = load-font :file<./resources/fonts/Nimra-Regular.otf>;
+
+show-glyph $font, $glyph;
+

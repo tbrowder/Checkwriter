@@ -12,7 +12,6 @@ constant ACCOUNT-ID   = 'hancock-whitney';
 constant CHECK-NUMBER = '1290';
 constant PAYEE        = 'Sam Palumbo';
 constant AMOUNT       = '500.00';
-constant MEMO         = 'test sample';
 
 my %account = load-account(ACCOUNT-ID);
 my %layout  = layout-for(ACCOUNT-ID);
@@ -31,50 +30,89 @@ my IO::Path $public-font =
 die "Public MICR font not found: $public-font"
     unless $public-font.f;
 
-my IO::Path $private-font = private-micr-font();
+my IO::Path $private-font-dir =
+    $*HOME.add('.checkwriter/fonts');
 
-die "Private MICR font not found: $private-font"
-    unless $private-font.f;
+#die "Private MICR font not found: $private-font"
+#    unless $private-font.f;
 
 my Str $date = Date.today.Str;
 
-my IO::Path $public-output =
-    'micr-debug-public.pdf'.IO;
-
-my IO::Path $private-output =
-    'micr-debug-private.pdf'.IO;
-
-create-check(
-    %account,
-    %layout,
-    :account-id(ACCOUNT-ID),
-    :output($public-output.Str),
-    :micr-font-file($public-font),
-    :$date,
-    :payee(PAYEE),
-    :amount(AMOUNT),
-    :memo(MEMO),
-    :debug-micr,
-    :micr-font-label<Nimra-Regular>,
-);
-
-create-check(
-    %account,
-    %layout,
-    :account-id(ACCOUNT-ID),
-    :output($private-output.Str),
-    :micr-font-file($private-font),
-    :$date,
-    :payee(PAYEE),
-    :amount(AMOUNT),
-    :memo(MEMO),
-    :debug-micr,
-    :micr-font-label<MICR-Std-Medium>,
+my @samples = (
+    {
+        letter => 'A',
+        name   => 'Nimra-Regular',
+        font   => $public-font,
+        output => 'micr-debug-nimra.pdf',
+    },
+    {
+        letter => 'B',
+        name   => 'MICRStd',
+        font   => $private-font-dir.add('MICRStd.otf'),
+        output => 'micr-debug-micrstd.pdf',
+    },
+    {
+        letter => 'C',
+        name   => 'GnuMICR-OTF',
+        font   => $private-font-dir.add('GnuMICR.otf'),
+        output => 'micr-debug-gnu-otf.pdf',
+    },
+    {
+        letter => 'D',
+        name   => 'GnuMICR-Type1-PFB',
+        font   => $private-font-dir.add('GnuMICR.pfb'),
+        output => 'micr-debug-gnu-type1.pdf',
+    },
 );
 
 say();
-say 'MICR debug checks generated:';
-say "    $public-output";
-say "    $private-output";
+say 'Generating MICR sample checks...';
+
+for @samples -> %sample {
+    my Str $letter = %sample<letter>;
+    my Str $name   = %sample<name>;
+    my IO::Path $font-file = %sample<font>;
+    my Str $output = %sample<output>;
+
+    say();
+    say "Sample $letter: $name";
+
+    unless $font-file.f {
+        say "    FONT NOT FOUND: $font-file";
+        next;
+    }
+
+    my Bool $success = True;
+
+    try {
+        create-check(
+            %account,
+            %layout,
+            :account-id(ACCOUNT-ID),
+            :$output,
+            :micr-font-file($font-file),
+            :$date,
+            :payee(PAYEE),
+            :amount(AMOUNT),
+            :memo("Sample Check $letter"),
+            :debug-micr,
+            :micr-font-label($name),
+        );
+
+        CATCH {
+            default {
+                $success = False;
+                say "    FAILED: $_";
+            }
+        }
+    }
+
+    if $success {
+        say "    Created: $output";
+    }
+}
+
+say();
+say 'MICR sample generation finished.';
 
 done-testing;

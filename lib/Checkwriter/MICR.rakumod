@@ -8,7 +8,7 @@ our constant MICR-DASH    is export = chr(0x2449);
 our constant MICR-FONT-SIZE is export = 10;
 our constant MICR-PITCH     is export = 9;
 
-our sub micr-line(
+sub micr-line(
     Str $account-id,
     Str $routing,
     Str $account,
@@ -52,4 +52,20 @@ our sub micr-line(
             die "No MICR format defined for '$account-id'";
         }
     }
+}
+
+sub encode-gnumicr(Str:D $line --> Str) is export {
+    my Str $encoded = '';
+
+    for $line.comb -> $glyph {
+        given $glyph {
+            when MICR-TRANSIT { $encoded ~= 'A'; }
+            when MICR-ON-US   { $encoded ~= 'B'; }
+            when MICR-AMOUNT  { $encoded ~= 'C'; }
+            when MICR-DASH    { $encoded ~= 'D'; }
+            default          { $encoded ~= $glyph; }
+        }
+    }
+
+    return $encoded;
 }

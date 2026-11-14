@@ -5,8 +5,8 @@ use Checkwriter::Check;
 plan 6;
 
 my %cases = (
-    '10'    => 'TEN and NO/100',
-    '10.00' => 'TEN and NO/100',
+    '10'    => 'TEN and no/100',
+    '10.00' => 'TEN and no/100',
     '10.03' => 'TEN and 3/100',
     '10.3'  => 'TEN and 30/100',
     '10.30' => 'TEN and 30/100',

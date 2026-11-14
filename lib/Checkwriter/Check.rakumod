@@ -103,7 +103,7 @@ sub amount-to-words(
     }
 
     my Str $fraction = $cents == 0
-        ?? 'NO/100'
+        ?? 'no/100'
         !! "$cents/100";
 
     return integer-to-words($dollars).uc ~ " and $fraction";

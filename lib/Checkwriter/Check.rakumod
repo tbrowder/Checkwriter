@@ -4,6 +4,7 @@ use PDF::Lite;
 use PDF::Font::Loader :load-font;
 use PDF::Content::FontObj;
 
+use Checkwriter::Config;
 use Checkwriter::MICR;
 
 sub integer-to-words(
@@ -222,6 +223,114 @@ sub show-glyph(
     say "    stringwidth   = {$font.stringwidth($character)}";
 }
 
+sub draw-micr-comparison(
+    $page,
+    $body-font,
+    --> Nil
+) {
+    my Str $sample =
+        '0123456789'
+        ~ MICR-TRANSIT ~ '123456789' ~ MICR-TRANSIT
+        ~ MICR-ON-US ~ '123456789' ~ MICR-ON-US;
+
+    my @font-specs = (
+        {
+            label => 'Nimra (public)',
+            path  => %?RESOURCES<fonts/Nimra-Regular.otf>,
+            size  => 10,
+            gnu   => False,
+        },
+        {
+            label => 'MICRStd (private)',
+            path  => private-micr-font(),
+            size  => 13.33,
+            gnu   => False,
+        },
+        {
+            label => 'GnuMICR (private)',
+            path  => gnumicr-font(),
+            size  => 13.33,
+            gnu   => True,
+        },
+    );
+
+    my Numeric $start-x = 36;
+    my Numeric $start-y = 105;
+
+    for @font-specs.kv -> $index, %spec {
+        my Numeric $y = $start-y - $index * 30;
+
+        unless %spec<path>.defined && %spec<path>.IO.f {
+            $page.text: -> $txt {
+                $txt.font = $body-font, 8;
+                $txt.say(
+                    "%spec<label> - font unavailable",
+                    :position[$start-x, $y],
+                );
+            };
+            next;
+        }
+
+        my $font = load-font :file(%spec<path>.IO.Str);
+
+        my Str $render-sample =
+            %spec<gnu>
+                ?? encode-gnumicr($sample)
+                !! $sample;
+
+        $page.text: -> $txt {
+            $txt.font = $body-font, 8;
+            $txt.say(
+                "%spec<label> - %spec<size> pt",
+                :position[$start-x, $y + 15],
+            );
+
+            $txt.font = $font, %spec<size>;
+
+            my Numeric $x = $start-x;
+
+            for $render-sample.comb -> $glyph {
+                if $glyph ne ' ' {
+                    $txt.say(
+                        $glyph,
+                        :position[$x, $y],
+                    );
+                }
+
+                $x += MICR-PITCH;
+            }
+        };
+
+        $page.graphics: -> $gfx {
+            my Numeric $x = $start-x;
+
+            for 0 .. $render-sample.chars -> $cell {
+                draw-line(
+                    $gfx,
+                    $x,
+                    $y - 3,
+                    $x,
+                    $y + %spec<size> + 3,
+                    :hairline,
+                );
+
+                $x += MICR-PITCH;
+            }
+
+            draw-line(
+                $gfx,
+                $start-x,
+                $y,
+                $x,
+                $y,
+                :hairline,
+            );
+        };
+    }
+
+    return;
+}
+
 sub create-check(
     %account,
     %layout,
@@ -244,6 +353,11 @@ sub create-check(
     my PDF::Content::FontObj $micr-font =
         load-font :file($micr-font-file.Str);
 
+    my Numeric $micr-font-size =
+        ($micr-font-file.basename eq 'GnuMICR.ttf'
+        or $micr-font-file.basename eq 'MICRStd.otf')
+            ?? 13.33
+            !! MICR-FONT-SIZE;
 
     my PDF::Lite $pdf .= new;
     $pdf.media-box = 'Letter';
@@ -379,7 +493,7 @@ sub create-check(
     my ($micr-x, $micr-y) = |%layout<micr>;
 
     $page.text: -> $txt {
-        $txt.font = $micr-font, MICR-FONT-SIZE;
+        $txt.font = $micr-font, $micr-font-size;
 
         my Numeric $x = $micr-x;
 
@@ -418,17 +532,16 @@ sub create-check(
             "Font:          $micr-font-label",
             "Font file:     {$micr-font-file.basename}",
             "Generated:     {DateTime.now}",
-            "Font size:     {MICR-FONT-SIZE} pt",
+            "Font size:     {$micr-font-size} pt",
             "Glyph pitch:   {MICR-PITCH} pt",
             "MICR X/Y:      $micr-x / $micr-y pt",
             "Glyph count:   $glyph-count",
             "Chunk width:   {$chunk-width.fmt('%.2f')} pt",
-            "Chunk height:  {MICR-FONT-SIZE} pt (nominal)",
+            "Chunk height:  {$micr-font-size} pt (nominal)",
             "Pattern:       $pattern",
             "Account:       $account-id",
             "Check number:  $number",
         );
-
 
         $page.text: -> $txt {
             $txt.font = $body-font, 8;
@@ -452,7 +565,7 @@ sub create-check(
         constant SPECIMEN-Y = 380;
 
         $page.text: -> $txt {
-            $txt.font = $micr-font, MICR-FONT-SIZE;
+            $txt.font = $micr-font, $micr-font-size;
 
             my Numeric $x = $specimen-x;;
 
@@ -492,7 +605,7 @@ sub create-check(
                     $x,
                     SPECIMEN-Y - 3,
                     $x,
-                    SPECIMEN-Y + MICR-FONT-SIZE + 3,
+                    SPECIMEN-Y + $micr-font-size + 3,
                     :hairline,
                 );
 
@@ -502,7 +615,12 @@ sub create-check(
 
     }
 
+    if $test-mode {
+        draw-micr-comparison($page, $body-font);
+    }
+
     my IO::Path $output-file = $output.IO;
+
     $output-file.parent.mkdir unless $output-file.parent.e;
     $pdf.save-as($output-file.Str);
 

@@ -59,3 +59,7 @@ sub load-account(
 sub private-micr-font(--> IO::Path) is export {
     private-root().add('fonts').add('MICRStd.otf');
 }
+
+sub gnumicr-font(--> IO::Path) is export {
+    private-root().add('fonts').add('GnuMICR.ttf');
+}

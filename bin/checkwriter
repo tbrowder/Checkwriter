@@ -6,17 +6,6 @@ use Checkwriter::Check;
 use Checkwriter::Config;
 use Checkwriter::Layout;
 
-=begin comment
-my Bool $debug =
-   (%*ENV<CHECKWRITER_DEBUG> // 'False').lc eq any('true', '1');
-
-my Bool $debug-micr =
-   (%*ENV<CHECKWRITER_DEBUG_MICR> // 'False').lc eq any('true', '1');
-
-my Bool $test-mode =
-   (%*ENV<CHECKWRITER_TEST> // 'False').lc eq any('true', '1');
-=end comment
-
 my Str $debug-value =
     (%*ENV<CHECKWRITER_DEBUG> // 'false').lc;
 
@@ -77,7 +66,7 @@ for @*ARGS -> $arg {
         $font-choice = $arg.substr('--micr-font='.chars).lc;
     }
     elsif $arg eq '--help' or $arg eq '-h' {
-        say 'Usage: checkwriter [-a=h|f|s] [--micr-font=public|private] [output.pdf]';
+        say 'Usage: checkwriter [-a=h|f|s] [--micr-font=public|private|gnumicr] [output.pdf]';
         exit;
     }
     elsif $arg.starts-with('-') {
@@ -99,13 +88,20 @@ my %layout         = layout-for($account-id);
 my IO::Path $font-file;
 
 if $font-choice eq 'private' {
+    # Existing MICRStd selection
     $font-file = private-micr-font();
 
     die "Private MICR font not found: $font-file"
         unless $font-file.f;
 }
-elsif $font-choice eq 'public' {
+elsif $font-choice eq 'gnumicr' {
+    $font-file = gnumicr-font();
 
+    die "GnuMICR font not found: $font-file"
+        unless $font-file.f;
+}
+elsif $font-choice eq 'public' {
+    # Existing Nimra selection.
     my $public-font = %?RESOURCES<fonts/Nimra-Regular.otf>;
 
     unless $public-font.defined {
@@ -136,6 +132,20 @@ my Str $amount = prompt('Amount');
 die 'Amount is required' unless $amount.chars;
 
 my Str $memo = prompt('Memo');
+
+if $test-mode {
+    given $font-choice {
+        when 'public' {
+            $memo = 'Font: Public - Nimra';
+        }
+        when 'private' {
+            $memo = 'Font: Private - MICRStd';
+        }
+        when 'gnumicr' {
+            $memo = 'Font: Private - GnuMICR';
+        }
+    }
+}
 
 my IO::Path $created = create-check(
     %account,

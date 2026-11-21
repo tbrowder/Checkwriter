@@ -93,6 +93,7 @@ sub amount-to-words(
     my Int $dollars = @parts[0].Int;
     my Int $cents = 0;
 
+    # todo: 01 instead of 1
     if @parts.elems > 1 {
         my Str $cent-part = @parts[1];
 
@@ -451,6 +452,7 @@ sub create-check(
             :align<right>,
         );
 
+        # todo: asterisks to be vertically centered and fill horizontal space
         my Str $written-line =
             $amount-words ~ ' DOLLARS ' ~ ('*' x 18);
 

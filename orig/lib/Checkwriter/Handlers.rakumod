@@ -1,6 +1,6 @@
 unit module Checkwriter::Handlers;
 
-#=== exported subs ===
+# == exported subs ===
 # Receives a path to the user's register.json file
 # along with data for the desired actions:
 #
@@ -37,4 +37,4 @@ sub handle-register(Transact $action, :$path!, :$debug) is export {
     }
 }
 
-#=== non-exported subs ===
+# == non-exported subs ===

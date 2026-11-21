@@ -24,7 +24,7 @@ sub action(@args, :$debug) is export {
     my $help   = 0;
 
     for @args {
-        #=== options
+        # options
         when /^D/ {
             $debug = 1;
         }
@@ -38,7 +38,7 @@ sub action(@args, :$debug) is export {
             $cfil = ~$0;
         }
 
-        #=== modes
+        # modes
         when /^w/ {
             $write = 1
         }

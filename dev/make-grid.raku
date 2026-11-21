@@ -76,5 +76,5 @@ $pdf.save-as: $ofile;
 say "See outout pdf: $ofile";
 say "Total pages: $pages";
 
-#==== subroutines line
+# subroutines line
 # all subs moved to Checkwriter/Utils.rakumod

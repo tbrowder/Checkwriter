@@ -39,5 +39,5 @@ for 1..3 -> $i {
 $pdf.save-as: $ofile;
 say "See output file: ", $ofile;
 
-#==== subroutines line
+# subroutines line
 # all subs moved to Checkwriter/Utils.rakumod

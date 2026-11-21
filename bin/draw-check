@@ -218,9 +218,9 @@ sub draw-line(
     $gfx.Stroke;
 }
 
-#========================================
+#
 # MAIN
-#========================================
+#
 
 sub MAIN(
     Str :$output = 'preview.pdf',
@@ -413,7 +413,7 @@ sub MAIN(
             :position[$x, $y],
         );
 
-#=======
+#
         #
         # Bank identification.
         #
@@ -432,7 +432,7 @@ sub MAIN(
             %account<bank-address>,
             :position[36, 692],
         );
-#=======
+#
 
         #
         # Check number.
@@ -464,7 +464,7 @@ sub MAIN(
             :align<right>,
         );
 
-#=====
+#
         #
         # Payee.
         #
@@ -520,7 +520,7 @@ sub MAIN(
             $written-line,
             :position[36, 629],
         );
-#======
+#
 
         #
         # Memo.

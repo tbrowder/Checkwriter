@@ -371,13 +371,13 @@ sub create-check(
             $txt.font = $bold-font, 48;
             $txt.say(
                 'VOID',
-                :position[225, 650],
+                :position[225, 668],
             );
 
             $txt.font = $bold-font, 10;
             $txt.say(
                 'Sample check - not negotiable',
-                :position[205, 625],
+                :position[205, 643],
             );
         };
     }
@@ -408,7 +408,7 @@ sub create-check(
 
         $txt.say(%account<city-state-zip>, :position[$x, $y]);
 
-        $txt.font = $body-font, 9;
+        $txt.font = $bold-font, 9;
         $txt.say(%account<bank-name>, :position(%layout<bank-name>));
 
         $txt.font = $body-font, 8;
@@ -495,6 +495,7 @@ sub create-check(
     $page.text: -> $txt {
         $txt.font = $micr-font, $micr-font-size;
 
+        =begin comment
         my Numeric $x = $micr-x;
 
         for $render-line.comb -> $glyph {
@@ -503,6 +504,39 @@ sub create-check(
             }
 
             $x += MICR-PITCH;
+        }
+        =end comment
+
+        my Numeric $x = $micr-x;
+        my Int $index = 0;
+
+        my Int $account-start =
+        1 + %account<routing>.Str.chars + 1 + 2;
+
+        my Int $check-start =
+        $account-start + %account<account>.Str.chars + 1 + 3;
+
+        for $render-line.comb -> $glyph {
+            my Numeric $offset = 0;
+
+            if $account-id eq 'hancock-whitney' {
+                if $index >= $check-start {
+                    $offset = 90;
+                }
+                elsif $index >= $account-start {
+                    $offset = 81;
+                }
+            }
+
+            if $glyph ne ' ' {
+                $txt.say(
+                    $glyph,
+                    :position[$x + $offset, $micr-y],
+                );
+            }
+
+            $x += MICR-PITCH;
+            $index++;
         }
     };
 

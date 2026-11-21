@@ -95,7 +95,7 @@ for %y1.kv -> $k, $v {
 # handlers subroutines MUST be defined for all key types
 # handlers may be auto-generated
 
-#==== subroutines line
+# subroutines line
 # all subs moved to Checkwriter/Utils.rakumod
 
 

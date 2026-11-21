@@ -1,4 +1,8 @@
 .precomp
 cw-resources/
 t.list
+private/
+PRIVATE/
+
+
 
